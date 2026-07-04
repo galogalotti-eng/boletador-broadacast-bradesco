@@ -1,0 +1,1978 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Broadcast Boletador · Bradesco</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --red-700:#8F0420;
+  --red-600:#C90A2E;
+  --red-500:#E01438;
+  --red-50:#FCEAEE;
+  --red-100:#F8D2D9;
+
+  --ink-900:#14171C;
+  --ink-800:#1E2229;
+  --ink-700:#333944;
+  --ink-500:#697180;
+  --ink-400:#8A93A3;
+  --ink-300:#B7BEC9;
+  --ink-100:#E6E9EE;
+  --ink-50:#F3F4F7;
+
+  --surface:#F1F2F5;
+  --card:#FFFFFF;
+  --line:#E3E6EB;
+
+  --teal-700:#0A5F63;
+  --teal-600:#0E7B80;
+  --teal-500:#12969C;
+  --teal-50:#E6F5F5;
+
+  --amber-700:#8A5A0A;
+  --amber-600:#B7791F;
+  --amber-50:#FCF2DF;
+
+  --green-700:#0F6B45;
+  --green-600:#1D8A5E;
+  --green-50:#E5F5ED;
+
+  --blue-700:#1B4B85;
+  --blue-600:#2563AC;
+  --blue-50:#E9F1FA;
+
+  --radius-sm:6px;
+  --radius-md:10px;
+  --radius-lg:16px;
+  --shadow-sm: 0 1px 2px rgba(20,23,28,.06);
+  --shadow-md: 0 6px 20px rgba(20,23,28,.08);
+  --shadow-lg: 0 20px 48px rgba(20,23,28,.18);
+  --font-disp: 'Space Grotesk', 'Inter', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  margin:0; background:var(--surface); color:var(--ink-900);
+  font-family:var(--font-body); font-size:14px; line-height:1.45;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:var(--font-disp); margin:0; letter-spacing:-0.01em;}
+p{margin:0;}
+button{font-family:inherit; cursor:pointer;}
+input,select,textarea{font-family:inherit; font-size:13.5px;}
+a{color:inherit;}
+::selection{background:var(--red-100);}
+.tnum{font-variant-numeric:tabular-nums;}
+:focus-visible{outline:2px solid var(--teal-500); outline-offset:2px; border-radius:4px;}
+
+/* ============ APP SHELL ============ */
+#app{display:flex; flex-direction:column; height:100vh; overflow:hidden;}
+#app-body{display:flex; flex:1; min-height:0;}
+#app-footer{
+  height:30px; flex:none; background:var(--ink-900); color:var(--ink-400); display:flex; align-items:center; justify-content:center;
+  gap:8px; font-size:11px; font-weight:600; letter-spacing:.01em; border-top:1px solid rgba(255,255,255,.06);
+}
+#app-footer b{color:#fff; font-weight:700;}
+#app-footer .fdot{width:3px;height:3px;border-radius:50%;background:var(--ink-400);}
+
+/* ---- Sidebar ---- */
+#sidebar{
+  width:76px; flex:none; background:var(--ink-900); color:#fff;
+  display:flex; flex-direction:column; align-items:center; padding:18px 0 14px;
+  gap:4px; position:relative; z-index:20;
+}
+.side-mark{width:36px; height:36px; border-radius:9px; background:linear-gradient(135deg,#8a1224 0%,#c90a2e 55%,#e0163c 100%); display:flex; align-items:center; justify-content:center; margin-bottom:22px; box-shadow:0 2px 10px rgba(201,10,46,.45); flex:none; padding:7px;}
+.side-mark svg{width:100%;height:100%;}
+.side-nav{display:flex; flex-direction:column; gap:2px; width:100%; align-items:center; flex:1; overflow-y:auto;}
+.side-item{
+  width:52px; height:52px; border-radius:12px; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:3px; color:var(--ink-400); background:transparent; border:none; position:relative; transition:background .15s, color .15s;
+}
+.side-item i{width:19px; height:19px;}
+.side-item span{font-size:9.5px; font-weight:600; letter-spacing:.01em;}
+.side-item:hover{background:rgba(255,255,255,.07); color:#fff;}
+.side-item.active{background:var(--red-600); color:#fff;}
+.side-item.active::before{content:''; position:absolute; left:-14px; top:50%; transform:translateY(-50%); width:4px; height:22px; background:var(--red-500); border-radius:0 4px 4px 0;}
+.side-sep{width:34px; height:1px; background:rgba(255,255,255,.12); margin:8px 0;}
+.side-foot{display:flex; flex-direction:column; align-items:center; gap:10px; padding-top:8px;}
+.persona-chip{width:38px; height:38px; border-radius:50%; background:var(--teal-600); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; font-family:var(--font-disp);}
+
+/* ---- Main column ---- */
+#main-col{flex:1; display:flex; flex-direction:column; min-width:0;}
+
+/* ---- Topbar ---- */
+#topbar{
+  height:68px; flex:none; background:var(--card); border-bottom:1px solid var(--line);
+  display:flex; align-items:center; justify-content:space-between; padding:0 26px; gap:20px; z-index:15;
+}
+.brand-wrap{display:flex; align-items:center; gap:12px;}
+.brand-mark{display:flex; align-items:center; gap:9px;}
+.bradesco-logo{display:flex; align-items:center; gap:9px; background:linear-gradient(135deg,#8a1224 0%,#c90a2e 55%,#e0163c 100%); padding:7px 14px 7px 9px; border-radius:10px; box-shadow:0 3px 10px rgba(201,10,46,.35);}
+.bradesco-logo .icon{width:24px;height:24px; position:relative; flex:none;}
+.bradesco-logo .icon svg{width:100%;height:100%;}
+.bradesco-logo .word{font-family:var(--font-disp); font-weight:700; font-size:17px; color:#ffffff; letter-spacing:-0.01em;}
+.product-tag{font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.09em; color:var(--ink-400); border-left:1px solid var(--line); padding-left:12px; margin-left:2px;}
+.greet{display:flex; flex-direction:column; line-height:1.15; margin-left:6px;}
+.greet .hi{font-size:11px; color:var(--ink-400); font-weight:600;}
+.greet .name{font-size:15px; font-weight:700; font-family:var(--font-disp);}
+.top-actions{display:flex; align-items:center; gap:10px;}
+.entity-select{
+  display:flex; align-items:center; gap:10px; background:var(--ink-50); border:1px solid var(--line); border-radius:999px;
+  padding:7px 8px 7px 14px; cursor:pointer; min-width:186px; justify-content:space-between;
+}
+.entity-select .lbl{display:flex; flex-direction:column; line-height:1.15;}
+.entity-select .lbl small{font-size:9.5px; color:var(--ink-400); font-weight:700; text-transform:uppercase; letter-spacing:.06em;}
+.entity-select .lbl b{font-size:12.5px; font-weight:700;}
+.entity-select select{appearance:none; border:none; background:transparent; font-weight:700; font-size:12.5px; color:var(--ink-900); cursor:pointer;}
+.icon-btn{
+  width:38px; height:38px; border-radius:10px; border:1px solid var(--line); background:var(--card);
+  display:flex; align-items:center; justify-content:center; color:var(--ink-500); position:relative; transition:.15s;
+}
+.icon-btn:hover{background:var(--ink-50); color:var(--ink-900);}
+.icon-btn i{width:17px;height:17px;}
+.badge-dot{position:absolute; top:6px; right:6px; width:8px; height:8px; border-radius:50%; background:var(--red-600); border:2px solid var(--card);}
+.btn{
+  display:inline-flex; align-items:center; gap:7px; border-radius:9px; border:1px solid transparent; padding:9px 16px;
+  font-weight:700; font-size:13px; transition:.15s; white-space:nowrap;
+}
+.btn i{width:15px;height:15px;}
+.btn-primary{background:var(--red-600); color:#fff; box-shadow:0 2px 6px rgba(201,10,46,.28);}
+.btn-primary:hover{background:var(--red-700);}
+.btn-dark{background:var(--ink-900); color:#fff;}
+.btn-dark:hover{background:var(--ink-800);}
+.btn-ghost{background:var(--card); border-color:var(--line); color:var(--ink-700);}
+.btn-ghost:hover{background:var(--ink-50);}
+.btn-subtle{background:var(--ink-50); color:var(--ink-700); border-color:var(--ink-50);}
+.btn-subtle:hover{background:var(--ink-100);}
+.btn-teal{background:var(--teal-600); color:#fff;}
+.btn-teal:hover{background:var(--teal-700);}
+.btn-danger-outline{background:#fff; color:var(--red-600); border-color:var(--red-100);}
+.btn-danger-outline:hover{background:var(--red-50);}
+.btn-sm{padding:6px 11px; font-size:12px; border-radius:7px;}
+.btn:disabled{opacity:.4; cursor:not-allowed;}
+
+/* ---- Page scaffolding ---- */
+#page{flex:1; overflow-y:auto; padding:26px 30px 60px;}
+.page-head{display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:20px; gap:20px; flex-wrap:wrap;}
+.crumb{font-size:11.5px; color:var(--ink-400); font-weight:600; display:flex; align-items:center; gap:6px; margin-bottom:6px;}
+.crumb i{width:12px;height:12px;}
+.page-title{font-size:24px; font-weight:700;}
+.page-sub{color:var(--ink-500); font-size:13px; margin-top:4px; max-width:560px;}
+.head-actions{display:flex; gap:10px; align-items:center;}
+
+.tabs{display:flex; gap:4px; background:var(--ink-50); padding:4px; border-radius:11px; width:fit-content; margin-bottom:20px; flex-wrap:wrap;}
+.tab-btn{padding:8px 16px; border-radius:8px; border:none; background:transparent; font-weight:700; font-size:12.5px; color:var(--ink-500); transition:.15s;}
+.tab-btn.active{background:#fff; color:var(--ink-900); box-shadow:var(--shadow-sm);}
+.tab-btn:hover:not(.active){color:var(--ink-800);}
+
+.subtabs{display:flex; gap:18px; border-bottom:1px solid var(--line); margin-bottom:18px;}
+.subtab-btn{padding:0 2px 12px; border:none; background:none; font-weight:700; font-size:13px; color:var(--ink-400); border-bottom:2px solid transparent; margin-bottom:-1px;}
+.subtab-btn.active{color:var(--red-600); border-color:var(--red-600);}
+
+/* ---- Cards / KPIs ---- */
+.grid{display:grid; gap:16px;}
+.kpi-row{grid-template-columns:repeat(4,1fr); margin-bottom:22px;}
+.kpi-card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius-lg); padding:18px 20px; box-shadow:var(--shadow-sm); position:relative; overflow:hidden;}
+.kpi-card .kpi-top{display:flex; justify-content:space-between; align-items:flex-start;}
+.kpi-icon{width:34px;height:34px;border-radius:9px; display:flex; align-items:center; justify-content:center;}
+.kpi-icon i{width:17px;height:17px;}
+.kpi-label{font-size:11.5px; color:var(--ink-500); font-weight:700; text-transform:uppercase; letter-spacing:.05em; margin-top:14px;}
+.kpi-value{font-size:27px; font-weight:700; font-family:var(--font-disp); margin-top:4px;}
+.kpi-delta{font-size:11.5px; font-weight:700; margin-top:6px; display:flex; align-items:center; gap:4px;}
+
+.card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);}
+.card-pad{padding:20px 22px;}
+.card-head{display:flex; align-items:center; justify-content:space-between; padding:18px 22px; border-bottom:1px solid var(--line);}
+.card-head h3{font-size:15.5px; font-weight:700;}
+.card-head .hint{font-size:11.5px; color:var(--ink-400); font-weight:600; margin-top:2px;}
+
+/* ---- Shortcuts (atalhos) ---- */
+.shortcut-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:12px;}
+.shortcut-tile{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--radius-md); padding:16px 14px; text-align:left;
+  display:flex; flex-direction:column; gap:14px; transition:.15s; position:relative;
+}
+.shortcut-tile:hover{border-color:var(--red-500); box-shadow:var(--shadow-md); transform:translateY(-1px);}
+.shortcut-tile .ic{width:32px;height:32px;border-radius:8px; background:var(--red-50); color:var(--red-600); display:flex; align-items:center; justify-content:center;}
+.shortcut-tile .ic i{width:16px;height:16px;}
+.shortcut-tile .lbl{font-size:12.5px; font-weight:700; line-height:1.3;}
+
+/* ---- Table ---- */
+.table-wrap{overflow-x:auto;}
+table.dt{width:100%; border-collapse:collapse; font-size:13px;}
+table.dt thead th{
+  text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-400);
+  font-weight:700; padding:11px 16px; border-bottom:1px solid var(--line); white-space:nowrap; background:var(--ink-50);
+  position:sticky; top:0; z-index:2;
+}
+table.dt thead th:first-child{border-top-left-radius:0;}
+table.dt tbody td{padding:13px 16px; border-bottom:1px solid var(--line); vertical-align:middle; color:var(--ink-800);}
+table.dt tbody tr:last-child td{border-bottom:none;}
+table.dt tbody tr:hover{background:var(--ink-50);}
+table.dt td.num, table.dt th.num{text-align:right; font-variant-numeric:tabular-nums;}
+.cell-strong{font-weight:700;}
+.cell-sub{font-size:11.5px; color:var(--ink-400); margin-top:2px;}
+.row-actions{display:flex; gap:4px; justify-content:flex-end;}
+.rowbtn{width:29px;height:29px;border-radius:7px;border:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;color:var(--ink-500);}
+.rowbtn:hover{background:var(--ink-50); color:var(--ink-900);}
+.rowbtn i{width:14px;height:14px;}
+.rowbtn.danger:hover{background:var(--red-50); color:var(--red-600); border-color:var(--red-100);}
+.chk{width:16px;height:16px; accent-color:var(--red-600);}
+
+/* ---- Pills / status ---- */
+.pill{display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:999px; font-size:11px; font-weight:700; white-space:nowrap;}
+.pill i{width:12px;height:12px;}
+.pill-green{background:var(--green-50); color:var(--green-700);}
+.pill-amber{background:var(--amber-50); color:var(--amber-700);}
+.pill-red{background:var(--red-50); color:var(--red-700);}
+.pill-blue{background:var(--blue-50); color:var(--blue-700);}
+.pill-ink{background:var(--ink-100); color:var(--ink-700);}
+.pill-teal{background:var(--teal-50); color:var(--teal-700);}
+.enq-icon{width:22px;height:22px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center;}
+.enq-icon i{width:13px;height:13px;}
+.enq-ok{background:var(--green-50); color:var(--green-600);}
+.enq-warn{background:var(--amber-50); color:var(--amber-600);}
+.enq-bad{background:var(--red-50); color:var(--red-600);}
+
+/* ---- Toolbar / search ---- */
+.toolbar{display:flex; align-items:center; justify-content:space-between; gap:14px; margin-bottom:16px; flex-wrap:wrap;}
+.search-box{display:flex; align-items:center; gap:9px; background:var(--card); border:1px solid var(--line); border-radius:10px; padding:9px 13px; min-width:280px; flex:1; max-width:380px;}
+.search-box i{width:16px;height:16px; color:var(--ink-400); flex:none;}
+.search-box input{border:none; outline:none; width:100%; background:transparent; font-size:13px;}
+.filter-chip{display:flex; align-items:center; gap:6px; border:1px solid var(--line); background:#fff; border-radius:8px; padding:8px 12px; font-size:12.5px; font-weight:600; color:var(--ink-600);}
+.filter-chip select{border:none; background:transparent; font-weight:700; color:var(--ink-900); outline:none;}
+
+/* ---- Forms ---- */
+.form-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px 20px;}
+.form-grid.two{grid-template-columns:repeat(2,1fr);}
+.field{display:flex; flex-direction:column; gap:6px;}
+.field.span2{grid-column:span 2;}
+.field.span3{grid-column:span 3;}
+.field label{font-size:11.5px; font-weight:700; color:var(--ink-500); text-transform:uppercase; letter-spacing:.03em;}
+.field label .req{color:var(--red-600);}
+.field input[type=text], .field input[type=number], .field input[type=date], .field select, .field textarea{
+  border:1px solid var(--line); border-radius:9px; padding:10px 12px; font-size:13.5px; background:#fff; color:var(--ink-900); width:100%;
+}
+.field input:focus, .field select:focus, .field textarea:focus{border-color:var(--teal-500);}
+.field .hintline{font-size:11px; color:var(--ink-400);}
+.radio-row{display:flex; gap:18px; flex-wrap:wrap; padding-top:4px;}
+.radio-opt{display:flex; align-items:center; gap:7px; font-size:13px; font-weight:600; color:var(--ink-700);}
+.radio-opt input{accent-color:var(--red-600); width:16px; height:16px;}
+.section-label{font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.07em; color:var(--red-600); display:flex; align-items:center; gap:8px; margin:6px 0 2px;}
+.section-label::after{content:''; flex:1; height:1px; background:var(--line);}
+fieldset{border:none; padding:0; margin:0; grid-column:1/-1; display:contents;}
+
+/* ---- Drawer / Modal ---- */
+.overlay{position:fixed; inset:0; background:rgba(15,17,21,.5); backdrop-filter:blur(2px); z-index:50; display:flex; justify-content:flex-end; opacity:0; pointer-events:none; transition:opacity .2s;}
+.overlay.show{opacity:1; pointer-events:auto;}
+.drawer{width:min(760px,94vw); background:var(--surface); height:100%; box-shadow:var(--shadow-lg); display:flex; flex-direction:column; transform:translateX(24px); transition:transform .22s;}
+.overlay.show .drawer{transform:translateX(0);}
+.drawer-head{background:var(--card); border-bottom:1px solid var(--line); padding:20px 26px; display:flex; align-items:center; justify-content:space-between;}
+.drawer-head h3{font-size:17px;}
+.drawer-head p{font-size:12px; color:var(--ink-400); margin-top:3px; font-weight:600;}
+.drawer-body{flex:1; overflow-y:auto; padding:24px 26px;}
+.drawer-foot{background:var(--card); border-top:1px solid var(--line); padding:16px 26px; display:flex; justify-content:flex-end; gap:10px;}
+.close-x{width:34px;height:34px;border-radius:9px; border:1px solid var(--line); background:#fff; display:flex; align-items:center; justify-content:center; color:var(--ink-500);}
+.close-x:hover{background:var(--ink-50);}
+
+.modal-overlay{position:fixed; inset:0; background:rgba(15,17,21,.55); z-index:60; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .18s;}
+.modal-overlay.show{opacity:1; pointer-events:auto;}
+.modal-box{width:min(460px,92vw); background:var(--card); border-radius:var(--radius-lg); box-shadow:var(--shadow-lg); transform:scale(.96); transition:transform .18s; overflow:hidden;}
+.modal-overlay.show .modal-box{transform:scale(1);}
+.modal-box.wide{width:min(620px,94vw);}
+.modal-head{padding:18px 22px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center;}
+.modal-head h4{font-size:15px;}
+.modal-body{padding:22px; max-height:70vh; overflow-y:auto;}
+.modal-foot{padding:14px 22px; border-top:1px solid var(--line); display:flex; justify-content:flex-end; gap:10px;}
+
+/* ---- Gauge (enquadramento signature element) ---- */
+.gauge-wrap{display:flex; flex-direction:column; align-items:center; gap:6px;}
+.gauge-val{font-family:var(--font-disp); font-size:22px; font-weight:700; margin-top:-46px;}
+.gauge-lbl{font-size:10.5px; color:var(--ink-400); font-weight:700; text-transform:uppercase; letter-spacing:.04em;}
+
+.limit-row{display:flex; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--line);}
+.limit-row:last-child{border-bottom:none;}
+.limit-meta{width:190px; flex:none;}
+.limit-meta .t{font-weight:700; font-size:12.5px;}
+.limit-meta .s{font-size:11px; color:var(--ink-400); margin-top:1px;}
+.limit-bar{flex:1; height:9px; border-radius:999px; background:var(--ink-100); position:relative; overflow:hidden;}
+.limit-bar > i{position:absolute; left:0; top:0; bottom:0; border-radius:999px; display:block;}
+.limit-pct{width:52px; text-align:right; font-weight:700; font-size:12.5px; flex:none;}
+
+/* ---- Timeline (pos-trade stepper) ---- */
+.stepper{display:flex; align-items:flex-start; gap:0; padding:8px 0 4px;}
+.step{flex:1; display:flex; flex-direction:column; align-items:center; position:relative; text-align:center;}
+.step .dot{width:30px;height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:var(--ink-100); color:var(--ink-400); font-weight:800; font-size:12px; z-index:1; border:3px solid var(--surface-inner,#fff);}
+.step.done .dot{background:var(--green-600); color:#fff;}
+.step.current .dot{background:var(--teal-600); color:#fff; box-shadow:0 0 0 5px var(--teal-50);}
+.step .line{position:absolute; top:15px; left:-50%; width:100%; height:2px; background:var(--ink-100); z-index:0;}
+.step:first-child .line{display:none;}
+.step.done .line, .step.current .line{background:var(--green-600);}
+.step .lbl{font-size:11px; font-weight:700; margin-top:9px; color:var(--ink-700); max-width:100px;}
+.step .time{font-size:10px; color:var(--ink-400); margin-top:2px;}
+
+/* ---- Uploader ---- */
+.uploader{border:2px dashed var(--ink-300); border-radius:var(--radius-lg); background:var(--card); padding:46px 20px; display:flex; flex-direction:column; align-items:center; gap:12px; text-align:center; transition:.15s;}
+.uploader.drag{border-color:var(--teal-500); background:var(--teal-50);}
+.uploader .up-ic{width:58px;height:58px; border-radius:50%; background:var(--teal-50); color:var(--teal-600); display:flex; align-items:center; justify-content:center;}
+.uploader .up-ic i{width:26px;height:26px;}
+.up-file{display:flex; align-items:center; justify-content:space-between; background:var(--card); border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin-top:10px;}
+.up-file .info{display:flex; align-items:center; gap:10px;}
+.up-file .ficon{width:34px;height:34px;border-radius:8px;background:var(--green-50); color:var(--green-700); display:flex; align-items:center; justify-content:center;}
+
+/* ---- Empty state ---- */
+.empty{display:flex; flex-direction:column; align-items:center; justify-content:center; padding:60px 20px; text-align:center; color:var(--ink-400); gap:10px;}
+.empty .ic{width:52px;height:52px; border-radius:50%; background:var(--ink-50); display:flex; align-items:center; justify-content:center; color:var(--ink-300);}
+
+/* ---- Toast ---- */
+#toast-wrap{position:fixed; bottom:24px; right:24px; display:flex; flex-direction:column; gap:10px; z-index:99;}
+.toast{background:var(--ink-900); color:#fff; padding:13px 18px; border-radius:11px; box-shadow:var(--shadow-lg); display:flex; align-items:center; gap:10px; font-size:13px; font-weight:600; min-width:260px; animation:toastin .25s ease;}
+.toast i{width:16px;height:16px; flex:none;}
+.toast.success{background:var(--green-700);}
+.toast.error{background:var(--red-700);}
+.toast.info{background:var(--teal-700);}
+@keyframes toastin{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);}}
+
+/* ---- Notification panel ---- */
+.notif-item{display:flex; gap:12px; padding:14px 4px; border-bottom:1px solid var(--line);}
+.notif-item .dot2{width:8px;height:8px;border-radius:50%;background:var(--red-600); margin-top:6px; flex:none;}
+.notif-item.read .dot2{background:var(--ink-200,#ddd);}
+.notif-item b{font-size:13px;}
+.notif-item .meta{font-size:11px; color:var(--ink-400); margin-top:3px;}
+
+/* ---- misc ---- */
+.divider{height:1px; background:var(--line); margin:18px 0;}
+.mini-chart{display:flex; align-items:flex-end; gap:5px; height:64px;}
+.mini-chart .bar{flex:1; background:linear-gradient(180deg,var(--red-500),var(--red-700)); border-radius:4px 4px 2px 2px; min-height:4px;}
+.legend{display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--ink-500); font-weight:600;}
+.legend i.dotc{width:8px;height:8px;border-radius:2px; display:inline-block;}
+.help-banner{display:flex; gap:12px; align-items:flex-start; background:var(--teal-50); border:1px solid #cdeceb; border-radius:12px; padding:14px 16px; margin-bottom:18px;}
+.help-banner i{width:18px;height:18px; color:var(--teal-700); flex:none; margin-top:1px;}
+.help-banner b{font-size:12.5px;}
+.help-banner p{font-size:12px; color:var(--ink-600); margin-top:3px;}
+.scroll-fade{-webkit-mask-image:linear-gradient(to bottom, black 92%, transparent);}
+::-webkit-scrollbar{width:9px; height:9px;}
+::-webkit-scrollbar-thumb{background:#c7cbd3; border-radius:20px;}
+::-webkit-scrollbar-track{background:transparent;}
+
+@media (max-width:1280px){
+  .product-tag{display:none;}
+  .entity-select{min-width:150px;}
+}
+@media (max-width:1000px){
+  .form-grid{grid-template-columns:repeat(2,1fr);}
+  .kpi-row{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div id="app-body">
+    <aside id="sidebar"></aside>
+    <div id="main-col">
+      <header id="topbar"></header>
+      <main id="page"></main>
+    </div>
+  </div>
+  <footer id="app-footer">
+    <span>Broadcast Boletador</span><span class="fdot"></span>
+    <span>Protótipo de apresentação executiva</span><span class="fdot"></span>
+    <span>Desenvolvido por <b>Daniel Galotti</b></span><span class="fdot"></span>
+    <span>Bradesco © 2026</span>
+  </footer>
+</div>
+
+<div id="drawer-root"></div>
+<div id="modal-root"></div>
+<div id="notif-root"></div>
+<div id="toast-wrap"></div>
+
+<script>
+/* ================================================================
+   BROADCAST BOLETADOR — DADOS MOCK
+================================================================ */
+const ICON_BRADESCO = `<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M20 5C13 8.2 8 13 8 20.5 8 28 13.5 33 20 34.5 26.5 33 32 28 32 20.5 32 13 27 8.2 20 5z" fill="none" stroke="#ffffff" stroke-width="2.3" stroke-linejoin="round"/><path d="M20 12.5c-3.6 2.4-6 5-6 9 0 4 2.2 6.6 6 8 3.8-1.4 6-4 6-8 0-4-2.4-6.6-6-9z" fill="#ffffff"/><line x1="20" y1="29.5" x2="20" y2="35.5" stroke="#ffffff" stroke-width="2.3" stroke-linecap="round"/></svg>`;
+const BRADESCO_BADGE_BG = 'linear-gradient(135deg,#8a1224 0%,#c90a2e 55%,#e0163c 100%)';
+
+let UID = 1000;
+const nextId = (p)=> `${p}-${UID++}`;
+
+const GESTORES = [
+  {id:"g1", nome:"Bradesco Asset Management (BRAM)", cnpj:"62.375.134/0001-44", tipo:"Ligada a Instituição Financeira", pl:"R$ 412,8 bi", fundos:38, status:"Ativo"},
+  {id:"g2", nome:"Itaú Asset Management", cnpj:"40.430.971/0001-96", tipo:"Ligada a Instituição Financeira", pl:"R$ 389,2 bi", fundos:52, status:"Ativo"},
+  {id:"g3", nome:"Santander Asset Management", cnpj:"10.231.177/0001-52", tipo:"Ligada a Instituição Financeira", pl:"R$ 198,4 bi", fundos:41, status:"Ativo"},
+  {id:"g4", nome:"BTG Pactual Asset Management", cnpj:"09.631.542/0001-37", tipo:"Ligada a Instituição Financeira", pl:"R$ 256,9 bi", fundos:63, status:"Ativo"},
+  {id:"g5", nome:"XP Asset Management", cnpj:"18.026.259/0001-40", tipo:"Independente", pl:"R$ 71,3 bi", fundos:29, status:"Ativo"},
+  {id:"g6", nome:"Kinea Investimentos", cnpj:"11.443.916/0001-90", tipo:"Independente", pl:"R$ 58,7 bi", fundos:22, status:"Ativo"},
+  {id:"g7", nome:"JGP Gestão de Recursos", cnpj:"03.628.379/0001-70", tipo:"Independente", pl:"R$ 14,1 bi", fundos:11, status:"Ativo"},
+  {id:"g8", nome:"SPX Capital", cnpj:"07.253.654/0001-04", tipo:"Independente", pl:"R$ 33,6 bi", fundos:9, status:"Ativo"},
+  {id:"g9", nome:"Verde Asset Management", cnpj:"09.019.958/0001-91", tipo:"Independente", pl:"R$ 21,4 bi", fundos:7, status:"Ativo"},
+  {id:"g10", nome:"Dynamo Administração de Recursos", cnpj:"33.132.678/0001-90", tipo:"Independente", pl:"R$ 12,8 bi", fundos:5, status:"Ativo"},
+  {id:"g11", nome:"Vinci Partners Investimentos", cnpj:"08.860.174/0001-38", tipo:"Independente", pl:"R$ 45,2 bi", fundos:18, status:"Ativo"},
+  {id:"g12", nome:"Absolute Investimentos", cnpj:"07.665.719/0001-70", tipo:"Independente", pl:"R$ 9,4 bi", fundos:6, status:"Ativo"},
+  {id:"g13", nome:"Sparta Fundos de Investimento", cnpj:"12.276.011/0001-72", tipo:"Independente", pl:"R$ 6,8 bi", fundos:8, status:"Ativo"},
+  {id:"g14", nome:"Legacy Capital Gestão de Recursos", cnpj:"29.694.881/0001-06", tipo:"Independente", pl:"R$ 24,5 bi", fundos:4, status:"Ativo"},
+  {id:"g15", nome:"Ibiuna Investimentos", cnpj:"11.286.762/0001-25", tipo:"Independente", pl:"R$ 15,9 bi", fundos:10, status:"Ativo"},
+];
+
+const FUNDOS = [
+  {id:"f1", nome:"Bradesco FIC FI Renda Fixa Referenciado DI Premium", cnpj:"64.722.215/0001-07", tipoCota:"Abertura", moeda:"BRL", perfil:"Conservador", gestor:"Bradesco Asset Management (BRAM)", admin:"Bradesco", pl:"R$ 3.240.500.812,44", cotistas:1284, status:"Ativo"},
+  {id:"f2", nome:"Bradesco FIC FIM Multimercado Macro Soberano", cnpj:"44.215.853/0001-16", tipoCota:"Abertura", moeda:"BRL", perfil:"Agressivo", gestor:"Bradesco Asset Management (BRAM)", admin:"Bradesco", pl:"R$ 1.876.320.010,00", cotistas:642, status:"Ativo"},
+  {id:"f3", nome:"Bradesco FIC FIA Ações Ibovespa Ativo", cnpj:"07.884.412/0001-25", tipoCota:"Abertura", moeda:"BRL", perfil:"Agressivo", gestor:"Bradesco Asset Management (BRAM)", admin:"Bradesco", pl:"R$ 982.410.550,20", cotistas:398, status:"Ativo"},
+  {id:"f4", nome:"Bradesco FI RF Longo Prazo Crédito Privado", cnpj:"12.559.870/0001-63", tipoCota:"Abertura", moeda:"BRL", perfil:"Moderado", gestor:"Bradesco Asset Management (BRAM)", admin:"Bradesco", pl:"R$ 2.104.900.300,10", cotistas:511, status:"Ativo"},
+  {id:"f5", nome:"Bradesco Private FIC FIM Blend Global", cnpj:"20.887.634/0001-99", tipoCota:"Fechado", moeda:"BRL", perfil:"Agressivo", gestor:"Vinci Partners Investimentos", admin:"Bradesco", pl:"R$ 654.120.000,00", cotistas:47, status:"Ativo"},
+  {id:"f6", nome:"Bradesco Top DI FIC FI RF Simples", cnpj:"03.351.219/0001-88", tipoCota:"Abertura", moeda:"BRL", perfil:"Conservador", gestor:"Bradesco Asset Management (BRAM)", admin:"Bradesco", pl:"R$ 4.560.720.000,00", cotistas:2310, status:"Ativo"},
+  {id:"f7", nome:"Bradesco FIC FIA Small Caps", cnpj:"09.774.221/0001-14", tipoCota:"Abertura", moeda:"BRL", perfil:"Agressivo", gestor:"Kinea Investimentos", admin:"Bradesco", pl:"R$ 318.740.900,00", cotistas:189, status:"Ativo"},
+  {id:"f8", nome:"Bradesco FI Cambial Dólar", cnpj:"05.982.114/0001-27", tipoCota:"Abertura", moeda:"USD", perfil:"Moderado", gestor:"Bradesco Asset Management (BRAM)", admin:"Bradesco", pl:"R$ 245.310.400,00", cotistas:96, status:"Ativo"},
+  {id:"f9", nome:"Fundo BroadCast", cnpj:"64.722.215/0001-07", tipoCota:"Abertura", moeda:"BRL", perfil:"Agressivo", gestor:"Bradesco Asset Management (BRAM)", admin:"Bradesco", pl:"R$ 30.400.320,88", cotistas:12, status:"Ativo"},
+  {id:"f10", nome:"Fundo da INV", cnpj:"44.215.853/0001-16", tipoCota:"Abertura", moeda:"BRL", perfil:"Agressivo", gestor:"Itaú Asset Management", admin:"Bradesco", pl:"R$ 20.256.697,74", cotistas:8, status:"Ativo"},
+];
+
+const ATIVOS = [
+  {id:"a1", classe:"Renda Fixa Pública", nome:"Tesouro Selic 2029", codigo:"LFT 2029", emissor:"Tesouro Nacional", indexador:"SELIC", vencimento:"01/03/2029"},
+  {id:"a2", classe:"Renda Fixa Pública", nome:"Tesouro Prefixado 2031", codigo:"LTN 2031", emissor:"Tesouro Nacional", indexador:"Prefixado", vencimento:"01/01/2031"},
+  {id:"a3", classe:"Renda Fixa Pública", nome:"Tesouro IPCA+ 2035", codigo:"NTN-B 2035", emissor:"Tesouro Nacional", indexador:"IPCA", vencimento:"15/05/2035"},
+  {id:"a4", classe:"Renda Fixa Privada", nome:"LFSN Bradesco 160006K", codigo:"LFSN160006K", emissor:"Banco Bradesco S.A.", indexador:"Ano Linear", vencimento:"17/07/2026"},
+  {id:"a5", classe:"Renda Fixa Privada", nome:"CDB Banco Bradesco DI+", codigo:"CDB-BBDC-2027", emissor:"Banco Bradesco S.A.", indexador:"% CDI", vencimento:"12/09/2027"},
+  {id:"a6", classe:"Renda Fixa Privada", nome:"Debênture Petrobras S13", codigo:"PETR-S13", emissor:"Petrobras S.A.", indexador:"IPCA+", vencimento:"20/11/2030"},
+  {id:"a7", classe:"Renda Fixa Privada", nome:"Debênture Vale S9", codigo:"VALE-S9", emissor:"Vale S.A.", indexador:"CDI+", vencimento:"05/06/2028"},
+  {id:"a8", classe:"Renda Fixa Privada", nome:"LFSC Bradesco 22002ID", codigo:"LFSC22002ID", emissor:"Banco Bradesco S.A.", indexador:"% CDI", vencimento:"28/09/2045"},
+  {id:"a9", classe:"Renda Variável", nome:"Petrobras PN", codigo:"PETR4", emissor:"B3", indexador:"—", vencimento:"—"},
+  {id:"a10", classe:"Renda Variável", nome:"Vale ON", codigo:"VALE3", emissor:"B3", indexador:"—", vencimento:"—"},
+  {id:"a11", classe:"Renda Variável", nome:"Itaú Unibanco PN", codigo:"ITUB4", emissor:"B3", indexador:"—", vencimento:"—"},
+  {id:"a12", classe:"Renda Variável", nome:"Bradesco PN", codigo:"BBDC4", emissor:"B3", indexador:"—", vencimento:"—"},
+  {id:"a13", classe:"Renda Variável", nome:"iShares Ibovespa (ETF)", codigo:"BOVA11", emissor:"B3", indexador:"—", vencimento:"—"},
+  {id:"a14", classe:"Derivativos", nome:"DI Futuro Jan/27", codigo:"DI1F27", emissor:"B3", indexador:"Taxa DI", vencimento:"04/01/2027"},
+  {id:"a15", classe:"Derivativos", nome:"Dólar Futuro Set/26", codigo:"DOLU26", emissor:"B3", indexador:"USD/BRL", vencimento:"01/09/2026"},
+  {id:"a16", classe:"Derivativos", nome:"Opção de Compra PETR4", codigo:"PETRK350", emissor:"B3", indexador:"—", vencimento:"18/09/2026"},
+  {id:"a17", classe:"Derivativos", nome:"Ibovespa Futuro Ago/26", codigo:"INDQ26", emissor:"B3", indexador:"Ibovespa", vencimento:"15/08/2026"},
+  {id:"a18", classe:"Cotas de Fundos", nome:"Absolute Alpha MARB FIC de FIM", codigo:"NO_CLASS-3424420F724", emissor:"Absolute Investimentos", indexador:"—", vencimento:"—"},
+  {id:"a19", classe:"Cotas de Fundos", nome:"Absolute Alpha Global FIC FIM", codigo:"NO_CLASS-8827731A190", emissor:"Absolute Investimentos", indexador:"—", vencimento:"—"},
+  {id:"a20", classe:"Cotas de Fundos", nome:"A1 Hedge FIC FIM", codigo:"NO_CLASS-5512290C441", emissor:"BTG Pactual Asset Management", indexador:"—", vencimento:"—"},
+];
+
+const COTISTAS = [
+  {id:"c1", nome:"Machado de Assis", doc:"111.222.333-44", tipo:"Pessoa Física", perfil:"Moderado", fundos:2},
+  {id:"c2", nome:"Clarice Lispector", doc:"222.333.444-55", tipo:"Pessoa Física", perfil:"Agressivo", fundos:3},
+  {id:"c3", nome:"Fernanda Montenegro", doc:"333.444.555-66", tipo:"Pessoa Física", perfil:"Conservador", fundos:1},
+  {id:"c4", nome:"Wagner Moura", doc:"444.555.666-77", tipo:"Pessoa Física", perfil:"Agressivo", fundos:4},
+  {id:"c5", nome:"Cecília Meireles", doc:"555.666.777-88", tipo:"Pessoa Física", perfil:"Moderado", fundos:2},
+  {id:"c6", nome:"Carlos Drummond de Andrade", doc:"666.777.888-99", tipo:"Pessoa Física", perfil:"Conservador", fundos:1},
+  {id:"c7", nome:"Sônia Braga", doc:"777.888.999-00", tipo:"Pessoa Física", perfil:"Moderado", fundos:2},
+  {id:"c8", nome:"Paulo Coelho", doc:"888.999.000-11", tipo:"Pessoa Física", perfil:"Agressivo", fundos:5},
+  {id:"c9", nome:"Jorge Amado", doc:"999.000.111-22", tipo:"Pessoa Física", perfil:"Moderado", fundos:2},
+  {id:"c10", nome:"Lima Barreto", doc:"000.111.222-33", tipo:"Pessoa Física", perfil:"Conservador", fundos:1},
+  {id:"c11", nome:"Cauã Reymond", doc:"121.232.343-54", tipo:"Pessoa Física", perfil:"Agressivo", fundos:3},
+  {id:"c12", nome:"Fernanda Torres", doc:"232.343.454-65", tipo:"Pessoa Física", perfil:"Moderado", fundos:2},
+  {id:"c13", nome:"João Guimarães Rosa", doc:"343.454.565-76", tipo:"Pessoa Física", perfil:"Conservador", fundos:1},
+  {id:"c14", nome:"Rachel de Queiroz", doc:"454.565.676-87", tipo:"Pessoa Física", perfil:"Moderado", fundos:2},
+  {id:"c15", nome:"Selton Mello", doc:"565.676.787-98", tipo:"Pessoa Física", perfil:"Agressivo", fundos:3},
+];
+
+const CONTRAPARTES = ["Banco Bradesco S.A.","BTG Pactual S.A.","Banco Itaú BBA S.A.","Banco Santander S.A.","XP Investimentos CCTVM S.A.","B3 S.A. – Brasil, Bolsa, Balcão"];
+
+// Entidades (tenants) disponíveis no seletor de perfil — visão Gestor
+const GESTORA_ENTIDADES = [
+  {nome:"SulAmérica Investimentos DTVM", curto:"SulAmérica"},
+  {nome:"SPX Capital Gestão de Recursos", curto:"SPX"},
+  {nome:"RB Capital Asset Management", curto:"RB Capital"},
+  {nome:"Bradesco Asset Management (BRAM)", curto:"BRAM"},
+  {nome:"Itaú Asset Management", curto:"Itaú Asset"},
+  {nome:"Kinea Investimentos", curto:"Kinea"},
+  {nome:"Vinci Partners Investimentos", curto:"Vinci Partners"},
+  {nome:"JGP Gestão de Recursos", curto:"JGP"},
+];
+const ADMIN_ENTIDADES = [
+  {nome:"Bradesco Administradora de Fundos", curto:"Bradesco"},
+];
+
+// classe -> {label, icon, unidade}
+const CLASSES = {
+  "rf-publica": {label:"Renda Fixa Pública", icon:"landmark", grupo:"Renda Fixa Pública"},
+  "rf-privada": {label:"Renda Fixa Privada", icon:"file-text", grupo:"Renda Fixa Privada"},
+  "rv": {label:"Renda Variável", icon:"trending-up", grupo:"Renda Variável"},
+  "derivativos": {label:"Derivativos", icon:"shuffle", grupo:"Derivativos"},
+  "cota-fundo": {label:"Cota de Fundo", icon:"pie-chart", grupo:"Cotas de Fundos"},
+};
+
+function fmtBRL(v){ return v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'}); }
+function todayStr(offsetDays){
+  const d = new Date(2026,6,4); // 04/07/2026 base
+  d.setDate(d.getDate()+(offsetDays||0));
+  return d.toLocaleDateString('pt-BR');
+}
+
+const ENQ_TEMPLATES = [
+  {tipo:"DIVERSIFICACAO", atuacao:"LIMITE POR ATIVO FINANCEIRO", controle:"AÇÕES - RECIBOS - COTAS FIA", min:0, max:100},
+  {tipo:"CONCENTRAÇÃO EMISSOR", atuacao:"LIMITE POR EMISSOR", controle:"BANCO BRADESCO S.A.", min:0, max:25},
+  {tipo:"LIQUIDEZ", atuacao:"LIMITE DE ATIVOS DE BAIXA LIQUIDEZ", controle:"CRÉDITO PRIVADO", min:0, max:20},
+  {tipo:"ALAVANCAGEM", atuacao:"LIMITE DE EXPOSIÇÃO A DERIVATIVOS", controle:"PL DO FUNDO", min:0, max:30},
+];
+
+function buildEnquadramento(seed, status){
+  const t = ENQ_TEMPLATES[seed % ENQ_TEMPLATES.length];
+  let pct;
+  if(status==="ok") pct = 40 + (seed*7 % 30);
+  else if(status==="warn") pct = 78 + (seed*3 % 15);
+  else pct = 96 + (seed % 5);
+  return {
+    fundo: "BREDG1CTF" + (100+seed),
+    dataRef: "2026-06-" + String(10+(seed%18)).padStart(2,'0'),
+    tipoRegra: t.tipo,
+    atuacao: t.atuacao,
+    controle: t.controle,
+    pct: pct.toFixed(4),
+    min: t.min, max: t.max,
+    status: status
+  };
+}
+
+const BOLETAS = [];
+(function seedBoletas(){
+  const linhas = [
+    {fundo:"Bradesco FIC FI Renda Fixa Referenciado DI Premium", classe:"cota-fundo", ativo:"Absolute Alpha MARB FIC de FIM", tipo:"Aplicação", valor:15825545.10, qtd:1280, dias:-4, status:"Pendente", enq:"ok"},
+    {fundo:"Bradesco FIC FI Renda Fixa Referenciado DI Premium", classe:"rf-privada", ativo:"LFSN Bradesco 160006K", tipo:"Compra", valor:20000211.10, qtd:1520, dias:-4, status:"Pendente de Autorização Interna", enq:"ok"},
+    {fundo:"Bradesco FIC FIM Multimercado Macro Soberano", classe:"rf-privada", ativo:"CDB Banco Bradesco DI+", tipo:"Aplicação", valor:150000000, qtd:100, dias:-7, status:"Reprovada", enq:"bad"},
+    {fundo:"Bradesco FIC FIM Multimercado Macro Soberano", classe:"rf-publica", ativo:"Tesouro IPCA+ 2035", tipo:"Compra", valor:10000000, qtd:10000, dias:-7, status:"Finalizada", enq:"bad"},
+    {fundo:"Bradesco FIC FIA Ações Ibovespa Ativo", classe:"rv", ativo:"Petrobras PN", tipo:"Compra", valor:1000000, qtd:100, dias:-7, status:"Pendente", enq:"ok"},
+    {fundo:"Bradesco FIC FIA Ações Ibovespa Ativo", classe:"cota-fundo", ativo:"Absolute Alpha Global FIC FIM", tipo:"Aplicação", valor:1200000, qtd:1000, dias:-7, status:"Pendente", enq:"ok"},
+    {fundo:"Bradesco FI RF Longo Prazo Crédito Privado", classe:"rf-privada", ativo:"Debênture Vale S9", tipo:"Compra", valor:100000000, qtd:120, dias:-8, status:"Pendente", enq:"warn"},
+    {fundo:"Bradesco FI RF Longo Prazo Crédito Privado", classe:"rv", ativo:"Vale ON", tipo:"Aplicação", valor:2000000, qtd:1000, dias:-8, status:"Finalizada", enq:"bad"},
+    {fundo:"Bradesco Top DI FIC FI RF Simples", classe:"cota-fundo", ativo:"A1 Hedge FIC FIM", tipo:"Aplicação", valor:200000000, qtd:12000, dias:-9, status:"Pendente", enq:"warn"},
+    {fundo:"Fundo da INV", classe:"rf-publica", ativo:"Tesouro Prefixado 2031", tipo:"Compra", valor:20000000, qtd:123, dias:-9, status:"Pendente de Autorização Interna", enq:"warn"},
+    {fundo:"Bradesco FIC FIA Small Caps", classe:"derivativos", ativo:"Ibovespa Futuro Ago/26", tipo:"Compra", valor:4200000, qtd:60, dias:-2, status:"Pendente", enq:"ok"},
+    {fundo:"Bradesco FI Cambial Dólar", classe:"derivativos", ativo:"Dólar Futuro Set/26", tipo:"Venda", valor:3100000, qtd:40, dias:-2, status:"Aprovada", enq:"ok"},
+    {fundo:"Bradesco Private FIC FIM Blend Global", classe:"rv", ativo:"Itaú Unibanco PN", tipo:"Compra", valor:5400000, qtd:900, dias:-1, status:"Aprovada", enq:"ok"},
+    {fundo:"Bradesco FIC FI Renda Fixa Referenciado DI Premium", classe:"rf-publica", ativo:"Tesouro Selic 2029", tipo:"Compra", valor:9800000, qtd:9800, dias:0, status:"Pendente", enq:"ok"},
+    {fundo:"Bradesco FIC FIM Multimercado Macro Soberano", classe:"derivativos", ativo:"DI Futuro Jan/27", tipo:"Venda", valor:6600000, qtd:220, dias:0, status:"Pendente", enq:"warn"},
+    {fundo:"Fundo BroadCast", classe:"rf-privada", ativo:"LFSC Bradesco 22002ID", tipo:"Compra", valor:1000000, qtd:100, dias:-7, status:"Pendente", enq:"ok"},
+  ];
+  linhas.forEach((l,i)=>{
+    BOLETAS.push({
+      id: nextId('BOL'),
+      fundo:l.fundo, classe:l.classe, ativo:l.ativo, tipo:l.tipo,
+      data: todayStr(l.dias), valor:l.valor, qtd:l.qtd,
+      contraparte: CONTRAPARTES[i % CONTRAPARTES.length],
+      registro: todayStr(l.dias), status:l.status,
+      enqStatus:l.enq, enq: buildEnquadramento(i, l.enq),
+      liquidacao: l.status==="Finalizada" ? "Liquidado" : (l.status==="Aprovada" ? "Aguardando liquidação" : "—"),
+      custodia: l.status==="Finalizada" ? "Confirmada" : "Pendente",
+    });
+  });
+})();
+
+const NOTIFICACOES = [
+  {t:"3 boletas aguardando autorização interna", m:"Fundo Bradesco FI RF Longo Prazo Crédito Privado", when:"há 12 min", read:false},
+  {t:"Enquadramento em alerta", m:"Concentração por emissor próxima do limite — Bradesco FIC FIM Macro Soberano", when:"há 38 min", read:false},
+  {t:"Importação em lote concluída", m:"48 operações inseridas com sucesso", when:"há 1h", read:false},
+  {t:"Boleta reprovada", m:"Farol Fundo de Investimento Renda Fixa — CDB Banco Bradesco DI+", when:"há 2h", read:true},
+  {t:"Novo cotista cadastrado", m:"Jorge Amado vinculado à Bradesco FIC FIA Small Caps", when:"ontem", read:true},
+];
+</script>
+
+<script>
+/* ================================================================
+   BROADCAST BOLETADOR — APP
+================================================================ */
+const state = {
+  persona: 'gestor', // 'gestor' | 'admin'
+  entidadeIdx: 0,
+  route: 'inicio',
+  boletagemClasse: 'rf-publica',
+  cadastroTab: 'fundo',
+  consultaTab: 'cadastros',
+  consultaCadTab: 'fundos',
+  notifOpen: false,
+  selectedBoletas: new Set(),
+};
+
+function icon(name, attrs){ return `<i data-lucide="${name}" ${attrs||''}></i>`; }
+function refreshIcons(){ if(window.lucide) lucide.createIcons(); }
+function el(html){ const t=document.createElement('template'); t.innerHTML=html.trim(); return t.content.firstElementChild; }
+function qs(s,r){ return (r||document).querySelector(s); }
+function qsa(s,r){ return Array.from((r||document).querySelectorAll(s)); }
+
+function toast(msg, type, iconName){
+  const wrap = qs('#toast-wrap');
+  const t = el(`<div class="toast ${type||''}">${icon(iconName||'check-circle-2')}<span>${msg}</span></div>`);
+  wrap.appendChild(t); refreshIcons();
+  setTimeout(()=>{ t.style.opacity='0'; t.style.transform='translateY(6px)'; t.style.transition='.25s'; setTimeout(()=>t.remove(),260); }, 3400);
+}
+
+function go(route, extra){
+  state.route = route;
+  if(extra) Object.assign(state, extra);
+  render();
+  qs('#page').scrollTop = 0;
+}
+
+/* ---------------- NAV DEFINITIONS ---------------- */
+const NAV_COMMON = [
+  {id:'inicio', label:'Início', icon:'layout-grid'},
+  {id:'consultas', label:'Consultas', icon:'search'},
+];
+const NAV_ADMIN_ONLY = {id:'cadastros', label:'Cadastros', icon:'folder-plus'};
+const NAV_TAIL = [
+  {id:'boletagem', label:'Boletagem', icon:'send-horizontal'},
+  {id:'pos-trade', label:'Pós-Trade', icon:'route'},
+  {id:'enquadramento', label:'Enquadramento', icon:'shield-check'},
+];
+
+function getNavItems(){
+  const items = [...NAV_COMMON];
+  if(state.persona==='admin') items.push(NAV_ADMIN_ONLY);
+  items.push(...NAV_TAIL);
+  return items;
+}
+
+/* ================= SIDEBAR ================= */
+function renderSidebar(){
+  const items = getNavItems();
+  const initials = state.persona==='admin' ? 'AD' : 'GE';
+  qs('#sidebar').innerHTML = `
+    <div class="side-mark" title="Bradesco · Broadcast Boletador">${ICON_BRADESCO}</div>
+    <nav class="side-nav">
+      ${items.map(it=>`
+        <button class="side-item ${state.route===it.id?'active':''}" data-nav="${it.id}" title="${it.label}">
+          ${icon(it.icon)}<span>${it.label}</span>
+        </button>`).join('')}
+    </nav>
+    <div class="side-sep"></div>
+    <div class="side-foot">
+      <button class="side-item" data-nav="configuracoes" title="Configurações" style="height:44px;">
+        ${icon('settings')}<span>Config.</span>
+      </button>
+      <div class="persona-chip" title="${state.persona==='admin'?'Administradora ADM':'Gestora de Investimentos'}">${initials}</div>
+    </div>
+  `;
+  qsa('[data-nav]', qs('#sidebar')).forEach(b=> b.addEventListener('click', ()=>{
+    const r = b.getAttribute('data-nav');
+    if(r==='cadastros') go('cadastros', {cadastroTab:'fundo'});
+    else if(r==='boletagem') go('boletagem', {boletagemClasse:'rf-publica'});
+    else if(r==='consultas') go('consultas', {consultaTab:'cadastros'});
+    else go(r);
+  }));
+  refreshIcons();
+}
+
+/* ================= TOPBAR ================= */
+function renderTopbar(){
+  const persona = state.persona;
+  const entidades = persona==='admin' ? ADMIN_ENTIDADES : GESTORA_ENTIDADES;
+  if(state.entidadeIdx >= entidades.length) state.entidadeIdx = 0;
+  const entidadeAtual = entidades[state.entidadeIdx];
+
+  qs('#topbar').innerHTML = `
+    <div class="brand-wrap">
+      <div class="bradesco-logo">
+        <div class="icon">${ICON_BRADESCO}</div>
+        <span class="word">bradesco</span>
+      </div>
+      <span class="product-tag">Broadcast Boletador</span>
+      <div class="greet">
+        <span class="hi">Olá,</span>
+        <span class="name">${entidadeAtual.curto}!</span>
+      </div>
+    </div>
+    <div class="top-actions">
+      <div class="entity-select" id="persona-toggle" title="Alternar perfil de acesso">
+        <div class="lbl"><small>Perfil de acesso</small><b>${persona==='admin' ? 'Visão Administrador' : 'Visão Gestor'}</b></div>
+        <select id="persona-select">
+          <option value="gestor" ${persona==='gestor'?'selected':''}>Gestor</option>
+          <option value="admin" ${persona==='admin'?'selected':''}>Administrador</option>
+        </select>
+      </div>
+      <div class="entity-select" id="entidade-toggle" title="Alternar instituição">
+        <div class="lbl"><small>${persona==='admin'?'Administradora':'Gestora de Investimentos'}</small><b>${entidadeAtual.curto}</b></div>
+        <select id="entidade-select">
+          ${entidades.map((e,i)=>`<option value="${i}" ${i===state.entidadeIdx?'selected':''}>${e.nome}</option>`).join('')}
+        </select>
+      </div>
+      <button class="icon-btn" id="btn-notif" title="Notificações">${icon('bell')}<span class="badge-dot"></span></button>
+      <button class="btn btn-ghost" id="btn-config">${icon('settings')} Configurações</button>
+    </div>
+  `;
+  qs('#persona-select').addEventListener('change', (e)=>{
+    state.persona = e.target.value;
+    state.entidadeIdx = 0;
+    if(state.persona==='gestor' && state.route==='cadastros') state.route='consultas';
+    if(state.persona==='gestor' && state.cadastroTab==='gestor') state.cadastroTab='fundo';
+    render();
+    toast(`Visão alterada para ${state.persona==='admin'?'Administrador':'Gestor'}`, 'info', 'repeat');
+  });
+  qs('#entidade-select').addEventListener('change', (e)=>{
+    state.entidadeIdx = Number(e.target.value);
+    renderTopbar();
+    toast(`Instituição alterada para ${entidades[state.entidadeIdx].nome}`, 'info', 'building-2');
+  });
+  qs('#btn-notif').addEventListener('click', openNotifPanel);
+  qs('#btn-config').addEventListener('click', ()=> go('configuracoes'));
+  refreshIcons();
+}
+
+/* ================= NOTIFICATION PANEL ================= */
+function openNotifPanel(){
+  const root = qs('#notif-root');
+  root.innerHTML = `
+  <div class="overlay show" id="notif-overlay">
+    <div class="drawer" style="width:min(420px,92vw);">
+      <div class="drawer-head">
+        <div><h3>Notificações</h3><p>${NOTIFICACOES.filter(n=>!n.read).length} não lidas</p></div>
+        <button class="close-x" id="notif-close">${icon('x')}</button>
+      </div>
+      <div class="drawer-body" style="padding-top:6px;">
+        ${NOTIFICACOES.map(n=>`
+          <div class="notif-item ${n.read?'read':''}">
+            <div class="dot2"></div>
+            <div>
+              <b>${n.t}</b>
+              <div class="meta">${n.m}</div>
+              <div class="meta" style="margin-top:4px;">${n.when}</div>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+  qs('#notif-close').addEventListener('click', ()=>{ qs('#notif-overlay').classList.remove('show'); setTimeout(()=>root.innerHTML='',200); });
+  qs('#notif-overlay').addEventListener('click', (e)=>{ if(e.target.id==='notif-overlay'){ qs('#notif-overlay').classList.remove('show'); setTimeout(()=>root.innerHTML='',200);} });
+  refreshIcons();
+}
+
+/* ================= DRAWER helper ================= */
+function openDrawer({title, sub, bodyHTML, footHTML, onMount}){
+  const root = qs('#drawer-root');
+  root.innerHTML = `
+  <div class="overlay show" id="dw-overlay">
+    <div class="drawer">
+      <div class="drawer-head">
+        <div><h3>${title}</h3>${sub?`<p>${sub}</p>`:''}</div>
+        <button class="close-x" id="dw-close">${icon('x')}</button>
+      </div>
+      <div class="drawer-body">${bodyHTML}</div>
+      <div class="drawer-foot">${footHTML||''}</div>
+    </div>
+  </div>`;
+  const close = ()=>{ qs('#dw-overlay').classList.remove('show'); setTimeout(()=>root.innerHTML='',200); };
+  qs('#dw-close').addEventListener('click', close);
+  qs('#dw-overlay').addEventListener('click', (e)=>{ if(e.target.id==='dw-overlay') close(); });
+  window.closeDrawer = close;
+  refreshIcons();
+  if(onMount) onMount();
+}
+
+function openModal({title, bodyHTML, footHTML, wide}){
+  const root = qs('#modal-root');
+  root.innerHTML = `
+  <div class="modal-overlay show" id="md-overlay">
+    <div class="modal-box ${wide?'wide':''}">
+      <div class="modal-head"><h4>${title}</h4><button class="close-x" id="md-close">${icon('x')}</button></div>
+      <div class="modal-body">${bodyHTML}</div>
+      ${footHTML?`<div class="modal-foot">${footHTML}</div>`:''}
+    </div>
+  </div>`;
+  const close = ()=>{ qs('#md-overlay').classList.remove('show'); setTimeout(()=>root.innerHTML='',180); };
+  qs('#md-close').addEventListener('click', close);
+  qs('#md-overlay').addEventListener('click', (e)=>{ if(e.target.id==='md-overlay') close(); });
+  window.closeModal = close;
+  refreshIcons();
+}
+
+/* ================= PILL / ENQ HELPERS ================= */
+function statusPill(status){
+  const map = {
+    "Pendente": ['pill-amber','clock'],
+    "Pendente de Autorização Interna": ['pill-blue','shield-alert'],
+    "Aprovada": ['pill-green','check'],
+    "Reprovada": ['pill-red','x'],
+    "Finalizada": ['pill-teal','check-check'],
+    "Cancelada": ['pill-ink','slash'],
+    "Ativo": ['pill-green','check'],
+  };
+  const [cls,ic] = map[status] || ['pill-ink','circle'];
+  return `<span class="pill ${cls}">${icon(ic)}${status}</span>`;
+}
+function enqIcon(st){
+  const map = {ok:['enq-ok','check'], warn:['enq-warn','triangle-alert'], bad:['enq-bad','x']};
+  const [cls,ic] = map[st]||map.ok;
+  return `<span class="enq-icon ${cls}" title="Enquadramento">${icon(ic)}</span>`;
+}
+
+/* ================= INÍCIO ================= */
+function renderInicio(){
+  const pend = BOLETAS.filter(b=>b.status.startsWith('Pendente')).length;
+  const aprov = BOLETAS.filter(b=>b.status==='Aprovada'||b.status==='Finalizada').length;
+  const alerta = BOLETAS.filter(b=>b.enqStatus!=='ok').length;
+  const volume = BOLETAS.reduce((s,b)=>s+b.valor,0);
+  const bars = [40,65,52,80,46,70,58,90,62,38,74,55];
+  const shortcuts = state.persona==='admin' ? [
+    {ic:'landmark', lbl:'Cadastro de Fundo', go:()=>go('cadastros',{cadastroTab:'fundo'})},
+    {ic:'boxes', lbl:'Cadastro de Ativo', go:()=>go('cadastros',{cadastroTab:'ativo'})},
+    {ic:'users', lbl:'Cadastro de Cotista', go:()=>go('cadastros',{cadastroTab:'cotista'})},
+    {ic:'briefcase', lbl:'Cadastro de Gestor', go:()=>go('cadastros',{cadastroTab:'gestor'})},
+    {ic:'upload-cloud', lbl:'Importação em Lote', go:()=>go('boletagem',{boletagemClasse:'importacao'})},
+    {ic:'shield-check', lbl:'Enquadramento', go:()=>go('enquadramento')},
+  ] : [
+    {ic:'landmark', lbl:'Boletagem RF Pública', go:()=>go('boletagem',{boletagemClasse:'rf-publica'})},
+    {ic:'file-text', lbl:'Boletagem RF Privada', go:()=>go('boletagem',{boletagemClasse:'rf-privada'})},
+    {ic:'trending-up', lbl:'Boletagem Renda Variável', go:()=>go('boletagem',{boletagemClasse:'rv'})},
+    {ic:'shuffle', lbl:'Boletagem Derivativos', go:()=>go('boletagem',{boletagemClasse:'derivativos'})},
+    {ic:'pie-chart', lbl:'Boletagem Cota de Fundo', go:()=>go('boletagem',{boletagemClasse:'cota-fundo'})},
+    {ic:'upload-cloud', lbl:'Importação em Lote', go:()=>go('boletagem',{boletagemClasse:'importacao'})},
+  ];
+
+  qs('#page').innerHTML = `
+    <div class="page-head">
+      <div>
+        <div class="crumb">${icon('home')} Início</div>
+        <div class="page-title">Painel de Boletagem</div>
+        <div class="page-sub">Visão consolidada das operações, enquadramento e liquidação do dia ${todayStr(0)}.</div>
+      </div>
+      <div class="head-actions">
+        <button class="btn btn-ghost" id="ir-consultas">${icon('search')} Consultar boletas</button>
+        <button class="btn btn-primary" id="ir-nova">${icon('plus')} Nova boleta</button>
+      </div>
+    </div>
+
+    <div class="grid kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-top"><div class="kpi-icon" style="background:var(--amber-50); color:var(--amber-700);">${icon('clock')}</div></div>
+        <div class="kpi-label">Boletas pendentes</div>
+        <div class="kpi-value tnum">${pend}</div>
+        <div class="kpi-delta" style="color:var(--amber-700);">${icon('arrow-up-right')} aguardando ação</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top"><div class="kpi-icon" style="background:var(--green-50); color:var(--green-700);">${icon('check-check')}</div></div>
+        <div class="kpi-label">Aprovadas / Finalizadas</div>
+        <div class="kpi-value tnum">${aprov}</div>
+        <div class="kpi-delta" style="color:var(--green-700);">${icon('trending-up')} +12% vs. ontem</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top"><div class="kpi-icon" style="background:var(--red-50); color:var(--red-700);">${icon('shield-alert')}</div></div>
+        <div class="kpi-label">Alertas de enquadramento</div>
+        <div class="kpi-value tnum">${alerta}</div>
+        <div class="kpi-delta" style="color:var(--red-700);">${icon('alert-triangle')} requer atenção</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top"><div class="kpi-icon" style="background:var(--blue-50); color:var(--blue-700);">${icon('banknote')}</div></div>
+        <div class="kpi-label">Volume boletado (dia)</div>
+        <div class="kpi-value tnum" style="font-size:21px;">${fmtBRL(volume)}</div>
+        <div class="kpi-delta" style="color:var(--blue-700);">${icon('layers')} ${BOLETAS.length} operações</div>
+      </div>
+    </div>
+
+    <div class="grid" style="grid-template-columns:1.5fr 1fr; align-items:start;">
+      <div class="card">
+        <div class="card-head"><div><h3>Volume boletado — últimos 12 dias úteis</h3><div class="hint">Renda fixa, renda variável, derivativos e cotas de fundos</div></div>
+          <div class="legend">${icon('circle',`style="width:8px;height:8px;color:var(--red-600)"`)} Volume diário (R$ mi)</div>
+        </div>
+        <div class="card-pad">
+          <div class="mini-chart">${bars.map(h=>`<div class="bar" style="height:${h}%"></div>`).join('')}</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Atalhos personalizados</h3><button class="icon-btn" style="width:30px;height:30px;">${icon('pencil')}</button></div>
+        <div class="card-pad">
+          <div class="shortcut-grid">
+            ${shortcuts.map(s=>`<button class="shortcut-tile" data-sc="${s.lbl}"><div class="ic">${icon(s.ic)}</div><div class="lbl">${s.lbl}</div></button>`).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <div class="card-head"><div><h3>Últimas boletas</h3><div class="hint">Atividade recente de movimentação de ativos</div></div>
+        <button class="btn btn-subtle btn-sm" id="ver-todas">Ver todas ${icon('arrow-right')}</button>
+      </div>
+      <div class="table-wrap">
+        <table class="dt">
+          <thead><tr><th>Fundo</th><th>Ativo</th><th>Tipo</th><th class="num">Valor</th><th>Status</th><th>Enquad.</th></tr></thead>
+          <tbody>
+            ${BOLETAS.slice(0,6).map(b=>`
+              <tr>
+                <td class="cell-strong">${b.fundo}</td>
+                <td>${b.ativo}</td>
+                <td>${b.tipo}</td>
+                <td class="num tnum">${fmtBRL(b.valor)}</td>
+                <td>${statusPill(b.status)}</td>
+                <td>${enqIcon(b.enqStatus)}</td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+  qs('#ir-consultas').addEventListener('click', ()=> go('consultas',{consultaTab:'movimentacao'}));
+  qs('#ir-nova').addEventListener('click', ()=> go('boletagem',{boletagemClasse:'rf-publica'}));
+  qs('#ver-todas').addEventListener('click', ()=> go('consultas',{consultaTab:'movimentacao'}));
+  shortcuts.forEach(s=>{ const b = qs(`[data-sc="${s.lbl.replace(/"/g,'')}"]`); if(b) b.addEventListener('click', s.go); });
+  refreshIcons();
+}
+
+/* ================= CONSULTAS ================= */
+function renderConsultas(){
+  const tabs = [
+    {id:'cadastros', label:'Cadastros'},
+    {id:'movimentacao', label:'Movimentação de Ativo'},
+  ];
+  qs('#page').innerHTML = `
+    <div class="page-head">
+      <div>
+        <div class="crumb">${icon('home')} / <span>Consultas</span></div>
+        <div class="page-title">Consultas</div>
+        <div class="page-sub">Pesquise fundos, ativos e o histórico de movimentações registradas na mesa.</div>
+      </div>
+    </div>
+    <div class="tabs" id="cons-tabs">${tabs.map(t=>`<button class="tab-btn ${state.consultaTab===t.id?'active':''}" data-t="${t.id}">${t.label}</button>`).join('')}</div>
+    <div id="cons-body"></div>
+  `;
+  qsa('[data-t]', qs('#cons-tabs')).forEach(b=> b.addEventListener('click', ()=>{ state.consultaTab=b.getAttribute('data-t'); renderConsultas(); }));
+  if(state.consultaTab==='cadastros') renderConsultaCadastros(); else renderMovimentacao(qs('#cons-body'), false);
+  refreshIcons();
+}
+
+function renderConsultaCadastros(){
+  const body = qs('#cons-body');
+  const subtabs = state.persona==='admin' ? ['fundos','ativos','gestores','cotistas'] : ['fundos','ativos'];
+  const labelMap = {fundos:'Fundos', ativos:'Ativos', gestores:'Gestores', cotistas:'Cotistas'};
+  if(!subtabs.includes(state.consultaCadTab)) state.consultaCadTab='fundos';
+  body.innerHTML = `
+    <div class="subtabs" id="cons-sub">${subtabs.map(s=>`<button class="subtab-btn ${state.consultaCadTab===s?'active':''}" data-s="${s}">${labelMap[s]}</button>`).join('')}</div>
+    <div id="cons-sub-body"></div>
+  `;
+  qsa('[data-s]', qs('#cons-sub')).forEach(b=> b.addEventListener('click', ()=>{ state.consultaCadTab=b.getAttribute('data-s'); renderConsultaCadastros(); }));
+  const target = qs('#cons-sub-body');
+  if(state.consultaCadTab==='fundos') renderListaFundos(target, {readonly:true});
+  if(state.consultaCadTab==='ativos') renderListaAtivos(target, {readonly:true});
+  if(state.consultaCadTab==='gestores') renderListaGestores(target, {readonly:true});
+  if(state.consultaCadTab==='cotistas') renderListaCotistas(target, {readonly:true});
+  refreshIcons();
+}
+
+/* ================= LISTAS (reutilizadas por Consultas e Cadastros) ================= */
+function toolbarHTML(placeholder, id){
+  return `<div class="toolbar">
+      <div class="search-box"><i data-lucide="search"></i><input type="text" id="${id}" placeholder="${placeholder}"></div>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <button class="btn btn-ghost btn-sm">${icon('download')} Exportar</button>
+        <button class="btn btn-ghost btn-sm">${icon('sliders-horizontal')} Filtros</button>
+      </div>
+    </div>`;
+}
+
+function renderListaFundos(container, opts){
+  opts = opts||{};
+  container.innerHTML = `
+    <div class="card">
+      <div class="card-head">
+        <div><h3>Fundos cadastrados</h3><div class="hint">${FUNDOS.length} fundos · Administrador Bradesco</div></div>
+        ${opts.readonly? '' : `<button class="btn btn-primary btn-sm" id="novo-fundo">${icon('plus')} Novo fundo</button>`}
+      </div>
+      <div class="card-pad" style="padding-bottom:0;">${toolbarHTML('Buscar por nome ou CNPJ...', 'busca-fundo')}</div>
+      <div class="table-wrap">
+        <table class="dt">
+          <thead><tr><th>Fundo</th><th>CNPJ</th><th>Tipo de cota</th><th>Moeda</th><th>Perfil</th><th>Gestor</th><th class="num">PL</th><th>Status</th><th></th></tr></thead>
+          <tbody id="tbody-fundos"></tbody>
+        </table>
+      </div>
+    </div>`;
+  const draw = (list)=>{
+    qs('#tbody-fundos').innerHTML = list.map(f=>`
+      <tr>
+        <td><div class="cell-strong">${f.nome}</div><div class="cell-sub">${f.admin}</div></td>
+        <td class="tnum">${f.cnpj}</td>
+        <td>${f.tipoCota}</td>
+        <td>${f.moeda}</td>
+        <td><span class="pill pill-ink">${f.perfil}</span></td>
+        <td>${f.gestor}</td>
+        <td class="num tnum">${f.pl}</td>
+        <td>${statusPill(f.status)}</td>
+        <td><div class="row-actions">
+          <button class="rowbtn" data-view="${f.id}">${icon('search')}</button>
+          ${opts.readonly?'':`<button class="rowbtn" data-edit="${f.id}">${icon('pencil')}</button><button class="rowbtn danger" data-del="${f.id}">${icon('trash-2')}</button>`}
+        </div></td>
+      </tr>`).join('');
+    qsa('[data-view]', container).forEach(b=> b.addEventListener('click', ()=> viewFundo(FUNDOS.find(x=>x.id===b.dataset.view))));
+    qsa('[data-edit]', container).forEach(b=> b.addEventListener('click', ()=> openFundoForm(FUNDOS.find(x=>x.id===b.dataset.edit))));
+    qsa('[data-del]', container).forEach(b=> b.addEventListener('click', ()=>{
+      confirmModal(`Remover o fundo "${FUNDOS.find(x=>x.id===b.dataset.del).nome}"?`, ()=>{
+        const idx = FUNDOS.findIndex(x=>x.id===b.dataset.del); FUNDOS.splice(idx,1); draw(FUNDOS); toast('Fundo removido.', 'success','trash-2');
+      });
+    }));
+    refreshIcons();
+  };
+  draw(FUNDOS);
+  qs('#busca-fundo').addEventListener('input', (e)=>{
+    const v = e.target.value.toLowerCase();
+    draw(FUNDOS.filter(f=> f.nome.toLowerCase().includes(v) || f.cnpj.includes(v)));
+  });
+  if(!opts.readonly) qs('#novo-fundo').addEventListener('click', ()=> openFundoForm());
+}
+
+function renderListaAtivos(container, opts){
+  opts = opts||{};
+  const classes = ['Todos', ...new Set(ATIVOS.map(a=>a.classe))];
+  container.innerHTML = `
+    <div class="card">
+      <div class="card-head">
+        <div><h3>Ativos disponíveis</h3><div class="hint">${ATIVOS.length} ativos de mercado cadastrados</div></div>
+        ${opts.readonly? '' : `<button class="btn btn-primary btn-sm" id="novo-ativo">${icon('plus')} Novo ativo</button>`}
+      </div>
+      <div class="card-pad" style="padding-bottom:0; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+        ${toolbarHTML('Buscar por nome ou código...', 'busca-ativo')}
+        <div class="filter-chip">${icon('layers')}<select id="filtro-classe">${classes.map(c=>`<option>${c}</option>`).join('')}</select></div>
+      </div>
+      <div class="table-wrap">
+        <table class="dt">
+          <thead><tr><th>Ativo</th><th>Código</th><th>Classe</th><th>Emissor</th><th>Indexador</th><th>Vencimento</th><th></th></tr></thead>
+          <tbody id="tbody-ativos"></tbody>
+        </table>
+      </div>
+    </div>`;
+  const draw = (list)=>{
+    qs('#tbody-ativos').innerHTML = list.map(a=>`
+      <tr>
+        <td class="cell-strong">${a.nome}</td>
+        <td class="tnum">${a.codigo}</td>
+        <td><span class="pill pill-teal">${a.classe}</span></td>
+        <td>${a.emissor}</td>
+        <td>${a.indexador}</td>
+        <td class="tnum">${a.vencimento}</td>
+        <td><div class="row-actions">
+          <button class="rowbtn" data-view="${a.id}">${icon('search')}</button>
+          ${opts.readonly?'':`<button class="rowbtn" data-edit="${a.id}">${icon('pencil')}</button><button class="rowbtn danger" data-del="${a.id}">${icon('trash-2')}</button>`}
+        </div></td>
+      </tr>`).join('');
+    qsa('[data-del]', container).forEach(b=> b.addEventListener('click', ()=>{
+      confirmModal(`Remover o ativo "${ATIVOS.find(x=>x.id===b.dataset.del).nome}"?`, ()=>{
+        const idx = ATIVOS.findIndex(x=>x.id===b.dataset.del); ATIVOS.splice(idx,1); draw(ATIVOS); toast('Ativo removido.', 'success','trash-2');
+      });
+    }));
+    qsa('[data-view]', container).forEach(b=> b.addEventListener('click', ()=> toast('Detalhe do ativo em consulta somente leitura.', 'info', 'eye')));
+    qsa('[data-edit]', container).forEach(b=> b.addEventListener('click', ()=> openAtivoForm(ATIVOS.find(x=>x.id===b.dataset.edit))));
+    refreshIcons();
+  };
+  draw(ATIVOS);
+  const applyFilter = ()=>{
+    const v = qs('#busca-ativo').value.toLowerCase();
+    const c = qs('#filtro-classe').value;
+    draw(ATIVOS.filter(a=> (c==='Todos'||a.classe===c) && (a.nome.toLowerCase().includes(v)||a.codigo.toLowerCase().includes(v))));
+  };
+  qs('#busca-ativo').addEventListener('input', applyFilter);
+  qs('#filtro-classe').addEventListener('change', applyFilter);
+  if(!opts.readonly) qs('#novo-ativo').addEventListener('click', ()=> openAtivoForm());
+}
+
+function renderListaGestores(container, opts){
+  opts = opts||{};
+  container.innerHTML = `
+    <div class="card">
+      <div class="card-head">
+        <div><h3>Gestores credenciados</h3><div class="hint">${GESTORES.length} gestoras de recursos habilitadas para operar</div></div>
+        ${opts.readonly? '' : `<button class="btn btn-primary btn-sm" id="novo-gestor">${icon('plus')} Novo gestor</button>`}
+      </div>
+      <div class="card-pad" style="padding-bottom:0;">${toolbarHTML('Buscar por nome ou CNPJ...', 'busca-gestor')}</div>
+      <div class="table-wrap">
+        <table class="dt">
+          <thead><tr><th>Gestor</th><th>CNPJ</th><th>Tipo</th><th class="num">PL sob gestão</th><th class="num">Fundos</th><th>Status</th><th></th></tr></thead>
+          <tbody id="tbody-gestores"></tbody>
+        </table>
+      </div>
+    </div>`;
+  const draw = (list)=>{
+    qs('#tbody-gestores').innerHTML = list.map(g=>`
+      <tr>
+        <td class="cell-strong">${g.nome}</td>
+        <td class="tnum">${g.cnpj}</td>
+        <td><span class="pill pill-ink">${g.tipo}</span></td>
+        <td class="num tnum">${g.pl}</td>
+        <td class="num tnum">${g.fundos}</td>
+        <td>${statusPill(g.status)}</td>
+        <td><div class="row-actions">
+          <button class="rowbtn" data-view="${g.id}">${icon('search')}</button>
+          ${opts.readonly?'':`<button class="rowbtn" data-edit="${g.id}">${icon('pencil')}</button><button class="rowbtn danger" data-del="${g.id}">${icon('trash-2')}</button>`}
+        </div></td>
+      </tr>`).join('');
+    qsa('[data-del]', container).forEach(b=> b.addEventListener('click', ()=>{
+      confirmModal(`Remover a gestora "${GESTORES.find(x=>x.id===b.dataset.del).nome}"?`, ()=>{
+        const idx = GESTORES.findIndex(x=>x.id===b.dataset.del); GESTORES.splice(idx,1); draw(GESTORES); toast('Gestor removido.', 'success','trash-2');
+      });
+    }));
+    qsa('[data-view]', container).forEach(b=> b.addEventListener('click', ()=> toast('Ficha completa da gestora em modo consulta.', 'info', 'eye')));
+    qsa('[data-edit]', container).forEach(b=> b.addEventListener('click', ()=> openGestorForm(GESTORES.find(x=>x.id===b.dataset.edit))));
+    refreshIcons();
+  };
+  draw(GESTORES);
+  qs('#busca-gestor').addEventListener('input', (e)=>{
+    const v = e.target.value.toLowerCase();
+    draw(GESTORES.filter(g=> g.nome.toLowerCase().includes(v) || g.cnpj.includes(v)));
+  });
+  if(!opts.readonly) qs('#novo-gestor').addEventListener('click', ()=> openGestorForm());
+}
+
+function renderListaCotistas(container, opts){
+  opts = opts||{};
+  container.innerHTML = `
+    <div class="card">
+      <div class="card-head">
+        <div><h3>Cotistas</h3><div class="hint">${COTISTAS.length} cotistas vinculados aos fundos Bradesco</div></div>
+        ${opts.readonly? '' : `<button class="btn btn-primary btn-sm" id="novo-cotista">${icon('plus')} Novo cotista</button>`}
+      </div>
+      <div class="card-pad" style="padding-bottom:0;">${toolbarHTML('Buscar por nome ou documento...', 'busca-cotista')}</div>
+      <div class="table-wrap">
+        <table class="dt">
+          <thead><tr><th>Cotista</th><th>Documento</th><th>Tipo</th><th>Perfil</th><th class="num">Fundos investidos</th><th></th></tr></thead>
+          <tbody id="tbody-cotistas"></tbody>
+        </table>
+      </div>
+    </div>`;
+  const draw = (list)=>{
+    qs('#tbody-cotistas').innerHTML = list.map(c=>`
+      <tr>
+        <td class="cell-strong">${c.nome}</td>
+        <td class="tnum">${c.doc}</td>
+        <td>${c.tipo}</td>
+        <td><span class="pill pill-ink">${c.perfil}</span></td>
+        <td class="num tnum">${c.fundos}</td>
+        <td><div class="row-actions">
+          <button class="rowbtn" data-view="${c.id}">${icon('search')}</button>
+          ${opts.readonly?'':`<button class="rowbtn" data-edit="${c.id}">${icon('pencil')}</button><button class="rowbtn danger" data-del="${c.id}">${icon('trash-2')}</button>`}
+        </div></td>
+      </tr>`).join('');
+    qsa('[data-del]', container).forEach(b=> b.addEventListener('click', ()=>{
+      confirmModal(`Remover o cotista "${COTISTAS.find(x=>x.id===b.dataset.del).nome}"?`, ()=>{
+        const idx = COTISTAS.findIndex(x=>x.id===b.dataset.del); COTISTAS.splice(idx,1); draw(COTISTAS); toast('Cotista removido.', 'success','trash-2');
+      });
+    }));
+    qsa('[data-view]', container).forEach(b=> b.addEventListener('click', ()=> toast('Ficha do cotista em modo consulta.', 'info', 'eye')));
+    qsa('[data-edit]', container).forEach(b=> b.addEventListener('click', ()=> openCotistaForm(COTISTAS.find(x=>x.id===b.dataset.edit))));
+    refreshIcons();
+  };
+  draw(COTISTAS);
+  qs('#busca-cotista').addEventListener('input', (e)=>{
+    const v = e.target.value.toLowerCase();
+    draw(COTISTAS.filter(c=> c.nome.toLowerCase().includes(v) || c.doc.includes(v)));
+  });
+  if(!opts.readonly) qs('#novo-cotista').addEventListener('click', ()=> openCotistaForm());
+}
+
+function confirmModal(msg, onConfirm){
+  openModal({
+    title:'Confirmar ação',
+    bodyHTML:`<p style="font-size:13.5px; color:var(--ink-700);">${msg}</p>`,
+    footHTML:`<button class="btn btn-ghost btn-sm" onclick="closeModal()">Cancelar</button><button class="btn btn-primary btn-sm" id="md-confirm">Confirmar</button>`
+  });
+  qs('#md-confirm').addEventListener('click', ()=>{ closeModal(); onConfirm(); });
+}
+
+/* ================= CADASTROS (Administrador) ================= */
+function renderCadastros(){
+  const tabs = [
+    {id:'fundo', label:'Fundo', icon:'landmark'},
+    {id:'ativo', label:'Ativo', icon:'boxes'},
+    {id:'cotista', label:'Cotista', icon:'users'},
+    {id:'gestor', label:'Gestor', icon:'briefcase'},
+  ];
+  qs('#page').innerHTML = `
+    <div class="page-head">
+      <div>
+        <div class="crumb">${icon('home')} / <span>Cadastros</span></div>
+        <div class="page-title">Cadastros mestres</div>
+        <div class="page-sub">Manutenção de fundos, ativos, cotistas e gestores habilitados a operar na plataforma.</div>
+      </div>
+    </div>
+    <div class="tabs" id="cad-tabs">${tabs.map(t=>`<button class="tab-btn ${state.cadastroTab===t.id?'active':''}" data-t="${t.id}">${icon(t.icon)} ${t.label}</button>`).join('')}</div>
+    <div id="cad-body"></div>
+  `;
+  qsa('[data-t]', qs('#cad-tabs')).forEach(b=> b.addEventListener('click', ()=>{ state.cadastroTab=b.getAttribute('data-t'); renderCadastros(); }));
+  const target = qs('#cad-body');
+  if(state.cadastroTab==='fundo') renderListaFundos(target, {readonly:false});
+  if(state.cadastroTab==='ativo') renderListaAtivos(target, {readonly:false});
+  if(state.cadastroTab==='cotista') renderListaCotistas(target, {readonly:false});
+  if(state.cadastroTab==='gestor') renderListaGestores(target, {readonly:false});
+  refreshIcons();
+}
+
+/* ---- Fundo: view + form (multi-seção, espelha a visão administrador do PDF) ---- */
+function viewFundo(f){
+  openModal({wide:true, title:f.nome, bodyHTML:`
+    <div class="form-grid two">
+      <div class="field"><label>CNPJ</label><p class="cell-strong tnum">${f.cnpj}</p></div>
+      <div class="field"><label>Tipo de cota</label><p class="cell-strong">${f.tipoCota}</p></div>
+      <div class="field"><label>Moeda</label><p class="cell-strong">${f.moeda}</p></div>
+      <div class="field"><label>Perfil de risco</label><p class="cell-strong">${f.perfil}</p></div>
+      <div class="field"><label>Gestor</label><p class="cell-strong">${f.gestor}</p></div>
+      <div class="field"><label>Administrador</label><p class="cell-strong">${f.admin}</p></div>
+      <div class="field"><label>Patrimônio líquido</label><p class="cell-strong tnum">${f.pl}</p></div>
+      <div class="field"><label>Cotistas</label><p class="cell-strong tnum">${f.cotistas}</p></div>
+    </div>`,
+    footHTML:`<button class="btn btn-ghost btn-sm" onclick="closeModal()">Fechar</button>`
+  });
+}
+
+function openFundoForm(f){
+  const isEdit = !!f;
+  const sections = ["Informações Gerais","Cotas","Taxas","Prestadores de Serviços","Contábil/IR","Parâmetros para Contábil","Documentação"];
+  openDrawer({
+    title: isEdit? `Editar fundo` : 'Novo fundo',
+    sub: isEdit? f.nome : 'Preencha as informações gerais para criar o fundo',
+    bodyHTML: `
+      <div class="tabs" id="fundo-sections" style="margin-bottom:22px;">
+        ${sections.map((s,i)=>`<button class="tab-btn ${i===0?'active':''}" data-fs="${i}">${s}</button>`).join('')}
+      </div>
+      <div id="fundo-section-body">
+        <div class="section-label">Dados cadastrais</div>
+        <div class="form-grid">
+          <div class="field span2"><label>Nome do fundo <span class="req">*</span></label><input type="text" id="ff-nome" value="${isEdit?f.nome:''}" placeholder="Ex: Bradesco FIC FI Renda Fixa..."></div>
+          <div class="field"><label>CNPJ <span class="req">*</span></label><input type="text" id="ff-cnpj" value="${isEdit?f.cnpj:''}" placeholder="00.000.000/0001-00"></div>
+          <div class="field"><label>Tipo de cota <span class="req">*</span></label>
+            <select id="ff-tipo"><option ${isEdit&&f.tipoCota==='Abertura'?'selected':''}>Abertura</option><option ${isEdit&&f.tipoCota==='Fechado'?'selected':''}>Fechado</option></select></div>
+          <div class="field"><label>Moeda <span class="req">*</span></label>
+            <select id="ff-moeda"><option ${isEdit&&f.moeda==='BRL'?'selected':''}>BRL</option><option ${isEdit&&f.moeda==='USD'?'selected':''}>USD</option></select></div>
+          <div class="field"><label>Perfil de risco <span class="req">*</span></label>
+            <select id="ff-perfil">${['Conservador','Moderado','Agressivo'].map(p=>`<option ${isEdit&&f.perfil===p?'selected':''}>${p}</option>`).join('')}</select></div>
+          <div class="field"><label>Gestor responsável <span class="req">*</span></label>
+            <select id="ff-gestor">${GESTORES.map(g=>`<option ${isEdit&&f.gestor===g.nome?'selected':''}>${g.nome}</option>`).join('')}</select></div>
+          <div class="field"><label>Administrador</label><input type="text" id="ff-admin" value="${isEdit?f.admin:'Bradesco'}"></div>
+          <div class="field"><label>Patrimônio líquido</label><input type="text" id="ff-pl" value="${isEdit?f.pl:'R$ 0,00'}"></div>
+        </div>
+        <div class="section-label" style="margin-top:22px;">Benchmark &amp; enquadramento</div>
+        <div class="form-grid">
+          <div class="field"><label>Índice de referência</label><select><option>CDI</option><option>IPCA</option><option>Ibovespa</option><option>IMA-B</option></select></div>
+          <div class="field"><label>Limite de concentração por emissor (%)</label><input type="number" value="25"></div>
+          <div class="field"><label>Limite de derivativos sobre PL (%)</label><input type="number" value="30"></div>
+        </div>
+      </div>
+    `,
+    footHTML: `<button class="btn btn-ghost" onclick="closeDrawer()">Cancelar</button>
+      <button class="btn btn-subtle" id="ff-save-new">Salvar e novo</button>
+      <button class="btn btn-primary" id="ff-save">${icon('check')} Salvar fundo</button>`,
+    onMount: ()=>{
+      qsa('[data-fs]').forEach(b=> b.addEventListener('click', ()=>{
+        qsa('[data-fs]').forEach(x=>x.classList.remove('active')); b.classList.add('active');
+        qs('#fundo-section-body').innerHTML = `<div class="empty" style="padding:36px 10px;"><div class="ic">${icon('layout-list')}</div><p style="font-weight:700; color:var(--ink-700);">${sections[b.dataset.fs]}</p><p style="max-width:320px;">Seção complementar do cadastro — preenchida após os dados gerais serem salvos.</p></div>`;
+        refreshIcons();
+      }));
+      const save = ()=>{
+        const nome = qs('#ff-nome').value.trim();
+        if(!nome){ toast('Informe o nome do fundo.', 'error','alert-triangle'); return; }
+        if(isEdit){
+          Object.assign(f, {nome, cnpj:qs('#ff-cnpj').value, tipoCota:qs('#ff-tipo').value, moeda:qs('#ff-moeda').value, perfil:qs('#ff-perfil').value, gestor:qs('#ff-gestor').value, admin:qs('#ff-admin').value, pl:qs('#ff-pl').value});
+          toast('Fundo atualizado com sucesso.', 'success');
+        } else {
+          FUNDOS.unshift({id:nextId('f'), nome, cnpj:qs('#ff-cnpj').value||'00.000.000/0001-00', tipoCota:qs('#ff-tipo').value, moeda:qs('#ff-moeda').value, perfil:qs('#ff-perfil').value, gestor:qs('#ff-gestor').value, admin:qs('#ff-admin').value||'Bradesco', pl:qs('#ff-pl').value||'R$ 0,00', cotistas:0, status:'Ativo'});
+          toast('Fundo cadastrado com sucesso.', 'success');
+        }
+        closeDrawer(); renderCadastros();
+      };
+      qs('#ff-save').addEventListener('click', save);
+      qs('#ff-save-new').addEventListener('click', ()=>{ save(); setTimeout(()=>openFundoForm(),260); });
+    }
+  });
+}
+
+function openAtivoForm(a){
+  const isEdit = !!a;
+  openDrawer({
+    title: isEdit? 'Editar ativo' : 'Novo ativo',
+    sub: 'Cadastro de ativo financeiro disponível para boletagem',
+    bodyHTML: `
+      <div class="section-label">Identificação</div>
+      <div class="form-grid">
+        <div class="field span2"><label>Nome do ativo <span class="req">*</span></label><input type="text" id="fa-nome" value="${isEdit?a.nome:''}"></div>
+        <div class="field"><label>Código / Ticker <span class="req">*</span></label><input type="text" id="fa-codigo" value="${isEdit?a.codigo:''}"></div>
+        <div class="field"><label>Classe <span class="req">*</span></label>
+          <select id="fa-classe">${['Renda Fixa Pública','Renda Fixa Privada','Renda Variável','Derivativos','Cotas de Fundos'].map(c=>`<option ${isEdit&&a.classe===c?'selected':''}>${c}</option>`).join('')}</select></div>
+        <div class="field"><label>Emissor</label><input type="text" id="fa-emissor" value="${isEdit?a.emissor:''}"></div>
+        <div class="field"><label>Indexador</label><input type="text" id="fa-index" value="${isEdit?a.indexador:''}"></div>
+        <div class="field"><label>Vencimento</label><input type="text" id="fa-venc" placeholder="dd/mm/aaaa" value="${isEdit&&a.vencimento!=='—'?a.vencimento:''}"></div>
+      </div>`,
+    footHTML: `<button class="btn btn-ghost" onclick="closeDrawer()">Cancelar</button><button class="btn btn-primary" id="fa-save">${icon('check')} Salvar ativo</button>`,
+    onMount: ()=>{
+      qs('#fa-save').addEventListener('click', ()=>{
+        const nome = qs('#fa-nome').value.trim();
+        if(!nome){ toast('Informe o nome do ativo.','error','alert-triangle'); return; }
+        const payload = {nome, codigo:qs('#fa-codigo').value, classe:qs('#fa-classe').value, emissor:qs('#fa-emissor').value, indexador:qs('#fa-index').value||'—', vencimento:qs('#fa-venc').value||'—'};
+        if(isEdit) Object.assign(a, payload); else ATIVOS.unshift({id:nextId('a'), ...payload});
+        toast(isEdit?'Ativo atualizado.':'Ativo cadastrado.', 'success');
+        closeDrawer(); renderCadastros();
+      });
+    }
+  });
+}
+
+function openGestorForm(g){
+  const isEdit = !!g;
+  openDrawer({
+    title: isEdit? 'Editar gestor' : 'Novo gestor',
+    sub: 'Cadastro de gestora de recursos habilitada a operar fundos Bradesco',
+    bodyHTML: `
+      <div class="section-label">Identificação</div>
+      <div class="form-grid">
+        <div class="field span2"><label>Razão social <span class="req">*</span></label><input type="text" id="fg-nome" value="${isEdit?g.nome:''}"></div>
+        <div class="field"><label>CNPJ <span class="req">*</span></label><input type="text" id="fg-cnpj" value="${isEdit?g.cnpj:''}"></div>
+        <div class="field"><label>Tipo de gestão</label>
+          <select id="fg-tipo"><option ${isEdit&&g.tipo==='Independente'?'selected':''}>Independente</option><option ${isEdit&&g.tipo!=='Independente'?'selected':''}>Ligada a Instituição Financeira</option></select></div>
+        <div class="field"><label>PL sob gestão</label><input type="text" id="fg-pl" value="${isEdit?g.pl:'R$ 0,0 bi'}"></div>
+        <div class="field"><label>Fundos sob gestão</label><input type="number" id="fg-fundos" value="${isEdit?g.fundos:0}"></div>
+      </div>`,
+    footHTML: `<button class="btn btn-ghost" onclick="closeDrawer()">Cancelar</button><button class="btn btn-primary" id="fg-save">${icon('check')} Salvar gestor</button>`,
+    onMount: ()=>{
+      qs('#fg-save').addEventListener('click', ()=>{
+        const nome = qs('#fg-nome').value.trim();
+        if(!nome){ toast('Informe a razão social.','error','alert-triangle'); return; }
+        const payload = {nome, cnpj:qs('#fg-cnpj').value||'00.000.000/0001-00', tipo:qs('#fg-tipo').value, pl:qs('#fg-pl').value, fundos:Number(qs('#fg-fundos').value)||0, status:'Ativo'};
+        if(isEdit) Object.assign(g, payload); else GESTORES.unshift({id:nextId('g'), ...payload});
+        toast(isEdit?'Gestor atualizado.':'Gestor cadastrado com sucesso.', 'success');
+        closeDrawer(); renderCadastros();
+      });
+    }
+  });
+}
+
+function openCotistaForm(c){
+  const isEdit = !!c;
+  openDrawer({
+    title: isEdit? 'Editar cotista' : 'Novo cotista',
+    sub: 'Cadastro de investidor vinculado a fundos Bradesco',
+    bodyHTML: `
+      <div class="section-label">Identificação</div>
+      <div class="form-grid">
+        <div class="field span2"><label>Nome completo <span class="req">*</span></label><input type="text" id="fc-nome" value="${isEdit?c.nome:''}"></div>
+        <div class="field"><label>Documento (CPF/CNPJ) <span class="req">*</span></label><input type="text" id="fc-doc" value="${isEdit?c.doc:''}"></div>
+        <div class="field"><label>Tipo</label><select id="fc-tipo"><option>Pessoa Física</option><option ${isEdit&&c.tipo==='Pessoa Jurídica'?'selected':''}>Pessoa Jurídica</option></select></div>
+        <div class="field"><label>Perfil de investidor</label>
+          <select id="fc-perfil">${['Conservador','Moderado','Agressivo'].map(p=>`<option ${isEdit&&c.perfil===p?'selected':''}>${p}</option>`).join('')}</select></div>
+        <div class="field"><label>Fundos investidos</label><input type="number" id="fc-fundos" value="${isEdit?c.fundos:1}"></div>
+      </div>`,
+    footHTML: `<button class="btn btn-ghost" onclick="closeDrawer()">Cancelar</button><button class="btn btn-primary" id="fc-save">${icon('check')} Salvar cotista</button>`,
+    onMount: ()=>{
+      qs('#fc-save').addEventListener('click', ()=>{
+        const nome = qs('#fc-nome').value.trim();
+        if(!nome){ toast('Informe o nome do cotista.','error','alert-triangle'); return; }
+        const payload = {nome, doc:qs('#fc-doc').value, tipo:qs('#fc-tipo').value, perfil:qs('#fc-perfil').value, fundos:Number(qs('#fc-fundos').value)||0};
+        if(isEdit) Object.assign(c, payload); else COTISTAS.unshift({id:nextId('c'), ...payload});
+        toast(isEdit?'Cotista atualizado.':'Cotista cadastrado.', 'success');
+        closeDrawer(); renderCadastros();
+      });
+    }
+  });
+}
+
+/* ================= MOVIMENTAÇÃO DE ATIVO (lista de boletas) ================= */
+function renderMovimentacao(container, standalone){
+  state.selectedBoletas = new Set();
+  const isAdmin = state.persona==='admin';
+  container.innerHTML = `
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <h3>Movimentação de Ativo</h3>
+          <div class="hint">${BOLETAS.length} boletas registradas · fluxo de aprovação em tempo real</div>
+        </div>
+        <div style="display:flex; gap:8px;">
+          ${isAdmin? `
+            <button class="btn btn-subtle btn-sm" data-act="Autorizar">${icon('key')} Autorizar</button>
+            <button class="btn btn-subtle btn-sm" data-act="Aprovada">${icon('check')} Aprovar</button>
+            <button class="btn btn-subtle btn-sm" data-act="Reprovada">${icon('x')} Reprovar</button>
+            <button class="btn btn-subtle btn-sm" data-act="Finalizada">${icon('landmark')} Liquidar</button>
+            <button class="btn btn-danger-outline btn-sm" data-act="Cancelada">${icon('ban')} Cancelar</button>
+          ` : `
+            <button class="btn btn-subtle btn-sm" data-act="Aprovada">${icon('check')} Aprovar</button>
+            <button class="btn btn-danger-outline btn-sm" data-act="Reprovada">${icon('x')} Reprovar</button>
+          `}
+          <button class="btn btn-ghost btn-sm">${icon('download')} Exportar</button>
+        </div>
+      </div>
+      <div class="card-pad" style="padding-bottom:0; display:flex; gap:10px; flex-wrap:wrap;">
+        ${toolbarHTML('Buscar por fundo ou ativo...', 'busca-mov')}
+        <div class="filter-chip">${icon('layers')}<select id="filtro-mov-classe"><option>Todas as classes</option>${Object.values(CLASSES).map(c=>`<option>${c.grupo}</option>`).join('')}</select></div>
+        <div class="filter-chip">${icon('flag')}<select id="filtro-mov-status"><option>Todos os status</option>${['Pendente','Pendente de Autorização Interna','Aprovada','Reprovada','Finalizada','Cancelada'].map(s=>`<option>${s}</option>`).join('')}</select></div>
+      </div>
+      <div class="table-wrap">
+        <table class="dt">
+          <thead><tr>
+            <th style="width:34px;"><input type="checkbox" class="chk" id="chk-all"></th>
+            <th>Fundo</th><th>Ativo</th><th>Data</th><th>Tipo</th><th class="num">Valor</th><th class="num">Quantidade</th><th>Registro</th><th>Status</th><th>Enquad.</th><th></th>
+          </tr></thead>
+          <tbody id="tbody-mov"></tbody>
+        </table>
+      </div>
+    </div>`;
+
+  const draw = (list)=>{
+    qs('#tbody-mov').innerHTML = list.map(b=>`
+      <tr>
+        <td><input type="checkbox" class="chk row-chk" data-id="${b.id}"></td>
+        <td class="cell-strong">${b.fundo}</td>
+        <td>${b.ativo}<div class="cell-sub">${CLASSES[b.classe]?.grupo||''}</div></td>
+        <td class="tnum">${b.data}</td>
+        <td>${b.tipo}</td>
+        <td class="num tnum">${fmtBRL(b.valor)}</td>
+        <td class="num tnum">${b.qtd.toLocaleString('pt-BR')}</td>
+        <td class="tnum">${b.registro}</td>
+        <td>${statusPill(b.status)}</td>
+        <td style="text-align:center;"><button class="rowbtn" data-enq="${b.id}" style="border:none;">${enqIcon(b.enqStatus)}</button></td>
+        <td><div class="row-actions">
+          <button class="rowbtn" data-view="${b.id}">${icon('search')}</button>
+          <button class="rowbtn" data-edit="${b.id}">${icon('pencil')}</button>
+          <button class="rowbtn danger" data-del="${b.id}">${icon('trash-2')}</button>
+        </div></td>
+      </tr>`).join('') || `<tr><td colspan="11"><div class="empty">${icon('inbox')}<p>Nenhuma boleta encontrada para o filtro atual.</p></div></td></tr>`;
+    qsa('.row-chk', container).forEach(c=> c.addEventListener('change', ()=>{
+      if(c.checked) state.selectedBoletas.add(c.dataset.id); else state.selectedBoletas.delete(c.dataset.id);
+    }));
+    qsa('[data-enq]', container).forEach(b=> b.addEventListener('click', ()=> showEnquadramentoModal(BOLETAS.find(x=>x.id===b.dataset.enq))));
+    qsa('[data-view]', container).forEach(b=> b.addEventListener('click', ()=> showBoletaDetalhe(BOLETAS.find(x=>x.id===b.dataset.view))));
+    qsa('[data-edit]', container).forEach(b=> b.addEventListener('click', ()=> toast('Edição de boleta disponível enquanto o status for "Pendente".', 'info','pencil')));
+    qsa('[data-del]', container).forEach(b=> b.addEventListener('click', ()=>{
+      confirmModal('Excluir esta boleta do registro?', ()=>{
+        const idx = BOLETAS.findIndex(x=>x.id===b.dataset.del); BOLETAS.splice(idx,1); draw(filterList()); toast('Boleta excluída.', 'success','trash-2');
+      });
+    }));
+    refreshIcons();
+  };
+  const filterList = ()=>{
+    const v = (qs('#busca-mov').value||'').toLowerCase();
+    const c = qs('#filtro-mov-classe').value;
+    const s = qs('#filtro-mov-status').value;
+    return BOLETAS.filter(b=>
+      (b.fundo.toLowerCase().includes(v) || b.ativo.toLowerCase().includes(v)) &&
+      (c==='Todas as classes' || CLASSES[b.classe]?.grupo===c) &&
+      (s==='Todos os status' || b.status===s)
+    );
+  };
+  draw(BOLETAS);
+  qs('#busca-mov').addEventListener('input', ()=> draw(filterList()));
+  qs('#filtro-mov-classe').addEventListener('change', ()=> draw(filterList()));
+  qs('#filtro-mov-status').addEventListener('change', ()=> draw(filterList()));
+  qs('#chk-all').addEventListener('change', (e)=>{
+    qsa('.row-chk', container).forEach(c=>{ c.checked = e.target.checked; c.dispatchEvent(new Event('change')); });
+  });
+  qsa('[data-act]', container).forEach(btn=> btn.addEventListener('click', ()=>{
+    if(state.selectedBoletas.size===0){ toast('Selecione ao menos uma boleta.', 'error','alert-triangle'); return; }
+    const action = btn.getAttribute('data-act');
+    const label = {Autorizar:'autorizadas', Aprovada:'aprovadas', Reprovada:'reprovadas', Finalizada:'liquidadas', Cancelada:'canceladas'}[action];
+    BOLETAS.forEach(b=>{
+      if(state.selectedBoletas.has(b.id)){
+        if(action==='Autorizar') b.status = 'Pendente';
+        else { b.status = action; if(action==='Finalizada'){ b.liquidacao='Liquidado'; b.custodia='Confirmada'; } }
+      }
+    });
+    toast(`${state.selectedBoletas.size} boleta(s) ${label} com sucesso.`, 'success','check-check');
+    draw(filterList());
+  }));
+}
+
+function showEnquadramentoModal(b){
+  const e = b.enq;
+  const statusInfo = {ok:['OK','enq-ok','check'], warn:['ALERTA','enq-warn','triangle-alert'], bad:['VIOLADO','enq-bad','x']}[b.enqStatus];
+  openModal({
+    title:'Resumo do enquadramento',
+    bodyHTML:`
+      <div style="text-align:center; margin-bottom:16px;">
+        <span class="enq-icon ${statusInfo[1]}" style="width:44px;height:44px;">${icon(statusInfo[2], 'style="width:20px;height:20px;"')}</span>
+      </div>
+      <div class="form-grid two" style="gap:14px 18px;">
+        <div class="field"><label>Fundo</label><p class="cell-strong tnum">${e.fundo}</p></div>
+        <div class="field"><label>Data ref.</label><p class="cell-strong tnum">${e.dataRef}</p></div>
+        <div class="field span2"><label>Tipo de regra</label><p class="cell-strong">${e.tipoRegra}</p></div>
+        <div class="field span2"><label>Atuação</label><p class="cell-strong">${e.atuacao}</p></div>
+        <div class="field span2"><label>Controle</label><p class="cell-strong">${e.controle}</p></div>
+        <div class="field"><label>% Posição</label><p class="cell-strong tnum">${e.pct}</p></div>
+        <div class="field"><label>Limite mínimo</label><p class="cell-strong tnum">${e.min}</p></div>
+        <div class="field"><label>Limite máximo</label><p class="cell-strong tnum">${e.max}</p></div>
+        <div class="field"><label>Status</label><p class="cell-strong" style="color:${b.enqStatus==='ok'?'var(--green-700)':b.enqStatus==='warn'?'var(--amber-700)':'var(--red-700)'}">${statusInfo[0]}</p></div>
+      </div>`,
+    footHTML:`<button class="btn btn-ghost btn-sm" onclick="closeModal()">Fechar</button>`
+  });
+}
+
+function showBoletaDetalhe(b){
+  openModal({wide:true, title:`Boleta ${b.id}`, bodyHTML:`
+    <div class="form-grid two">
+      <div class="field"><label>Fundo</label><p class="cell-strong">${b.fundo}</p></div>
+      <div class="field"><label>Ativo</label><p class="cell-strong">${b.ativo}</p></div>
+      <div class="field"><label>Tipo</label><p class="cell-strong">${b.tipo}</p></div>
+      <div class="field"><label>Data da operação</label><p class="cell-strong tnum">${b.data}</p></div>
+      <div class="field"><label>Valor</label><p class="cell-strong tnum">${fmtBRL(b.valor)}</p></div>
+      <div class="field"><label>Quantidade</label><p class="cell-strong tnum">${b.qtd.toLocaleString('pt-BR')}</p></div>
+      <div class="field"><label>Contraparte</label><p class="cell-strong">${b.contraparte}</p></div>
+      <div class="field"><label>Status</label><p>${statusPill(b.status)}</p></div>
+    </div>
+    <div class="divider"></div>
+    <div class="section-label">Pós-trade</div>
+    <div class="form-grid two">
+      <div class="field"><label>Liquidação</label><p class="cell-strong">${b.liquidacao}</p></div>
+      <div class="field"><label>Custódia</label><p class="cell-strong">${b.custodia}</p></div>
+    </div>`,
+    footHTML:`<button class="btn btn-ghost btn-sm" onclick="closeModal()">Fechar</button><button class="btn btn-teal btn-sm" id="ver-postrade">${icon('route')} Ver linha do tempo</button>`
+  });
+  qs('#ver-postrade').addEventListener('click', ()=>{ closeModal(); go('pos-trade', {postradeFoco:b.id}); });
+}
+
+/* ================= BOLETAGEM (Ativos de fundos) ================= */
+function renderBoletagem(){
+  const tabs = [...Object.entries(CLASSES).map(([k,v])=>({id:k, label:v.label, icon:v.icon})), {id:'importacao', label:'Importação em Lote', icon:'upload-cloud'}];
+  qs('#page').innerHTML = `
+    <div class="page-head">
+      <div>
+        <div class="crumb">${icon('home')} / <span>Ativos de fundos</span></div>
+        <div class="page-title">Boletagem — Movimentação de Ativos</div>
+        <div class="page-sub">Registre operações de compra, venda, aplicação e resgate para os fundos sob gestão.</div>
+      </div>
+    </div>
+    <div class="tabs" id="bol-tabs">${tabs.map(t=>`<button class="tab-btn ${state.boletagemClasse===t.id?'active':''}" data-t="${t.id}">${icon(t.icon)} ${t.label}</button>`).join('')}</div>
+    <div id="bol-body"></div>
+  `;
+  qsa('[data-t]', qs('#bol-tabs')).forEach(b=> b.addEventListener('click', ()=>{ state.boletagemClasse=b.getAttribute('data-t'); renderBoletagem(); }));
+  if(state.boletagemClasse==='importacao') renderImportacao(qs('#bol-body'));
+  else renderBoletagemForm(qs('#bol-body'), state.boletagemClasse);
+  refreshIcons();
+}
+
+function fundoOptions(sel){ return FUNDOS.map(f=>`<option value="${f.nome}" ${sel===f.nome?'selected':''}>${f.nome}</option>`).join(''); }
+function ativoOptionsByGrupo(grupo){ return ATIVOS.filter(a=>a.classe===grupo).map(a=>`<option value="${a.nome}">${a.nome} — ${a.codigo}</option>`).join(''); }
+
+function renderBoletagemForm(container, classeKey){
+  const meta = CLASSES[classeKey];
+  const relacionadas = BOLETAS.filter(b=>b.classe===classeKey).slice(0,6);
+
+  let campos = '';
+  if(classeKey==='rf-publica' || classeKey==='rf-privada'){
+    campos = `
+      <div class="section-label">Tipo de operação</div>
+      <div class="radio-row" style="grid-column:1/-1;">
+        ${['Compra','Venda','Compra-Revenda','Venda-Recompra','Revenda','Recompra'].map((t,i)=>`
+          <label class="radio-opt"><input type="radio" name="bf-tipo" value="${t}" ${i===0?'checked':''}> ${t}</label>`).join('')}
+      </div>
+      <div class="field span2"><label>Fundo / Cliente <span class="req">*</span></label><select id="bf-fundo">${fundoOptions()}</select></div>
+      <div class="field"><label>Título <span class="req">*</span></label><select id="bf-ativo">${ativoOptionsByGrupo(meta.grupo)}</select></div>
+      <div class="field"><label>Data de vencimento</label><input type="text" id="bf-venc" value="${todayStr(365)}"></div>
+      <div class="field"><label>Quantidade <span class="req">*</span></label><input type="number" id="bf-qtd" value="1000" min="0"></div>
+      <div class="field"><label>Valor unitário <span class="req">*</span></label><input type="number" id="bf-vu" value="1000.00" step="0.01"></div>
+      <div class="field"><label>Financeiro</label><input type="text" id="bf-financeiro" disabled></div>
+      <div class="field"><label>Contraparte <span class="req">*</span></label><select id="bf-contraparte">${CONTRAPARTES.map(c=>`<option>${c}</option>`).join('')}</select></div>
+      <div class="field"><label>Data da operação <span class="req">*</span></label><input type="text" id="bf-data" value="${todayStr(0)}"></div>
+      <div class="field"><label>Tipo de taxa</label><select><option>Ano Linear</option><option>Ano Base 252</option></select></div>
+      <div class="section-label">Liquidação e registro</div>
+      <div class="field"><label>Liquidação</label><select><option>Líquido</option><option>Bruto</option></select></div>
+      <div class="field"><label>Local de negociação <span class="req">*</span></label>
+        <div class="radio-row">
+          <label class="radio-opt"><input type="radio" name="bf-local" ${classeKey==='rf-publica'?'checked':''}> SELIC</label>
+          <label class="radio-opt"><input type="radio" name="bf-local" ${classeKey==='rf-privada'?'checked':''}> CETIP</label>
+        </div>
+      </div>
+      <div class="field"><label>Origem <span class="req">*</span></label>
+        <div class="radio-row"><label class="radio-opt"><input type="radio" name="bf-origem" checked> Negociação</label><label class="radio-opt"><input type="radio" name="bf-origem"> Vencimento</label></div></div>
+    `;
+  } else if(classeKey==='rv'){
+    campos = `
+      <div class="section-label">Tipo de operação</div>
+      <div class="radio-row" style="grid-column:1/-1;">
+        <label class="radio-opt"><input type="radio" name="bf-tipo" value="Compra" checked> Compra</label>
+        <label class="radio-opt"><input type="radio" name="bf-tipo" value="Venda"> Venda</label>
+      </div>
+      <div class="field span2"><label>Fundo / Cliente <span class="req">*</span></label><select id="bf-fundo">${fundoOptions()}</select></div>
+      <div class="field"><label>Ativo <span class="req">*</span></label><select id="bf-ativo">${ativoOptionsByGrupo('Renda Variável')}</select></div>
+      <div class="field"><label>Quantidade <span class="req">*</span></label><input type="number" id="bf-qtd" value="1000"></div>
+      <div class="field"><label>Preço unitário <span class="req">*</span></label><input type="number" id="bf-vu" value="32.40" step="0.01"></div>
+      <div class="field"><label>Financeiro</label><input type="text" id="bf-financeiro" disabled></div>
+      <div class="field"><label>Corretora / Contraparte <span class="req">*</span></label><select id="bf-contraparte">${CONTRAPARTES.map(c=>`<option>${c}</option>`).join('')}</select></div>
+      <div class="field"><label>Data da operação <span class="req">*</span></label><input type="text" id="bf-data" value="${todayStr(0)}"></div>
+      <div class="field"><label>Local de negociação</label><input type="text" value="B3" disabled></div>
+      <div class="field"><label>Liquidação</label><input type="text" value="D+2" disabled></div>
+    `;
+  } else if(classeKey==='derivativos'){
+    campos = `
+      <div class="section-label">Tipo de operação</div>
+      <div class="radio-row" style="grid-column:1/-1;">
+        ${['Abertura','Encerramento','Compra','Venda'].map((t,i)=>`<label class="radio-opt"><input type="radio" name="bf-tipo" value="${t}" ${i===0?'checked':''}> ${t}</label>`).join('')}
+      </div>
+      <div class="field span2"><label>Fundo / Cliente <span class="req">*</span></label><select id="bf-fundo">${fundoOptions()}</select></div>
+      <div class="field"><label>Contrato <span class="req">*</span></label><select id="bf-ativo">${ativoOptionsByGrupo('Derivativos')}</select></div>
+      <div class="field"><label>Quantidade de contratos <span class="req">*</span></label><input type="number" id="bf-qtd" value="50"></div>
+      <div class="field"><label>Preço / Pontos <span class="req">*</span></label><input type="number" id="bf-vu" value="12500" step="0.01"></div>
+      <div class="field"><label>Financeiro</label><input type="text" id="bf-financeiro" disabled></div>
+      <div class="field"><label>Margem exigida (R$)</label><input type="number" value="85000"></div>
+      <div class="field"><label>Contraparte <span class="req">*</span></label><select id="bf-contraparte">${CONTRAPARTES.map(c=>`<option>${c}</option>`).join('')}</select></div>
+      <div class="field"><label>Data da operação <span class="req">*</span></label><input type="text" id="bf-data" value="${todayStr(0)}"></div>
+    `;
+  } else if(classeKey==='cota-fundo'){
+    campos = `
+      <div class="field"><label>Fundo investidor <span class="req">*</span></label><select id="bf-fundo">${fundoOptions()}</select></div>
+      <div class="field"><label>Fundo investido <span class="req">*</span></label><select id="bf-ativo">${ativoOptionsByGrupo('Cotas de Fundos')}</select></div>
+      <div class="field"><label>Tipo <span class="req">*</span></label><select id="bf-tipo-select"><option>Aplicação</option><option>Resgate</option></select></div>
+      <div class="field"><label>Modalidade</label><select><option>Bruto</option><option>Líquido</option></select></div>
+      <div class="field"><label>Forma de liquidação</label><select><option>CETIP</option><option>B3</option></select></div>
+      <div class="field"><label>Contraparte</label><select id="bf-contraparte">${CONTRAPARTES.map(c=>`<option>${c}</option>`).join('')}</select></div>
+      <div class="field"><label>Data da operação <span class="req">*</span></label><input type="text" id="bf-data" value="${todayStr(0)}"></div>
+      <div class="field"><label>Data de cotização</label><input type="text" value="${todayStr(0)}"></div>
+      <div class="field"><label>Data de liquidação</label><input type="text" value="${todayStr(1)}"></div>
+      <div class="field"><label>Quantidade de cotas <span class="req">*</span></label><input type="number" id="bf-qtd" value="1000"></div>
+      <div class="field"><label>Valor da cota <span class="req">*</span></label><input type="number" id="bf-vu" value="15.80" step="0.00000001"></div>
+      <div class="field"><label>Financeiro</label><input type="text" id="bf-financeiro" disabled></div>
+    `;
+  }
+
+  container.innerHTML = `
+    <div class="grid" style="grid-template-columns:1.35fr 1fr; align-items:start;">
+      <div class="card">
+        <div class="card-head"><div><h3>Nova boleta — ${meta.label}</h3><div class="hint">/ ativos-de-fundos / ${classeKey} / criar</div></div>
+          <button class="icon-btn" title="Duplicar última boleta">${icon('copy')}</button>
+        </div>
+        <div class="card-pad">
+          <div class="form-grid" id="bf-form">${campos}</div>
+        </div>
+        <div class="drawer-foot" style="border-radius:0 0 16px 16px;">
+          <button class="btn btn-ghost" id="bf-clear">Limpar</button>
+          <button class="btn btn-subtle" id="bf-save-new">Salvar e novo</button>
+          <button class="btn btn-primary" id="bf-save">${icon('send-horizontal')} Salvar boleta</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Últimas boletas · ${meta.label}</h3></div>
+        <div id="bol-mini-list"></div>
+      </div>
+    </div>
+  `;
+
+  const drawMini = ()=>{
+    const list = BOLETAS.filter(b=>b.classe===classeKey).slice(0,7);
+    qs('#bol-mini-list').innerHTML = list.length ? list.map(b=>`
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; padding:13px 20px; border-bottom:1px solid var(--line);">
+        <div style="min-width:0;">
+          <div class="cell-strong" style="font-size:12.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:220px;">${b.fundo}</div>
+          <div class="cell-sub">${b.ativo} · ${b.tipo} · ${fmtBRL(b.valor)}</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px; flex:none;">${enqIcon(b.enqStatus)}${statusPill(b.status)}</div>
+      </div>`).join('') : `<div class="empty">${icon('inbox')}<p>Nenhuma boleta registrada nesta classe ainda.</p></div>`;
+    refreshIcons();
+  };
+  drawMini();
+
+  const recalc = ()=>{
+    const qtd = parseFloat(qs('#bf-qtd')?.value)||0;
+    const vu = parseFloat(qs('#bf-vu')?.value)||0;
+    if(qs('#bf-financeiro')) qs('#bf-financeiro').value = fmtBRL(qtd*vu);
+  };
+  ['bf-qtd','bf-vu'].forEach(id=>{ const elx=qs('#'+id); if(elx) elx.addEventListener('input', recalc); });
+  recalc();
+
+  const readForm = ()=>{
+    const fundo = qs('#bf-fundo')?.value || FUNDOS[0].nome;
+    const ativoSel = qs('#bf-ativo')?.value || '';
+    const ativoNome = ativoSel.split(' — ')[0] || ativoSel;
+    const tipo = qs('input[name="bf-tipo"]:checked')?.value || qs('#bf-tipo-select')?.value || 'Aplicação';
+    const qtd = parseFloat(qs('#bf-qtd')?.value)||0;
+    const vu = parseFloat(qs('#bf-vu')?.value)||0;
+    const contraparte = qs('#bf-contraparte')?.value || CONTRAPARTES[0];
+    const data = qs('#bf-data')?.value || todayStr(0);
+    if(!fundo || qtd<=0){ toast('Preencha os campos obrigatórios.', 'error','alert-triangle'); return null; }
+    return {fundo, ativo:ativoNome||meta.label, tipo, qtd, valor:qtd*vu, contraparte, data};
+  };
+  const commit = ()=>{
+    const d = readForm(); if(!d) return false;
+    const seed = BOLETAS.length;
+    const enqSt = seed%5===0 ? 'warn' : 'ok';
+    BOLETAS.unshift({
+      id:nextId('BOL'), fundo:d.fundo, classe:classeKey, ativo:d.ativo, tipo:d.tipo, data:d.data,
+      valor:d.valor, qtd:d.qtd, contraparte:d.contraparte, registro:todayStr(0),
+      status: state.persona==='admin' ? 'Pendente' : 'Pendente de Autorização Interna',
+      enqStatus:enqSt, enq:buildEnquadramento(seed, enqSt), liquidacao:'—', custodia:'Pendente'
+    });
+    return true;
+  };
+  qs('#bf-save').addEventListener('click', ()=>{ if(commit()){ toast('Boleta enviada para aprovação.', 'success','send-horizontal'); drawMini(); } });
+  qs('#bf-save-new').addEventListener('click', ()=>{ if(commit()){ toast('Boleta salva. Formulário pronto para a próxima.', 'success'); drawMini(); qsa('#bf-form input[type=number]').forEach(i=>i.value=''); recalc(); } });
+  qs('#bf-clear').addEventListener('click', ()=> renderBoletagemForm(container, classeKey));
+}
+
+/* ================= IMPORTAÇÃO EM LOTE ================= */
+function renderImportacao(container){
+  container.innerHTML = `
+    <div class="grid" style="grid-template-columns:1.3fr 1fr; align-items:start;">
+      <div class="card">
+        <div class="card-head"><div><h3>Importação em lote</h3><div class="hint">/ boletagem / importacao-em-lote</div></div>
+          <button class="btn btn-ghost btn-sm" id="baixar-template">${icon('download')} Download template</button>
+        </div>
+        <div class="card-pad">
+          <div class="uploader" id="dropzone">
+            <div class="up-ic">${icon('upload-cloud')}</div>
+            <p style="font-weight:700;">Arraste os arquivos aqui, ou clique para selecionar</p>
+            <p style="font-size:12px; color:var(--ink-400);">Suporta .csv e .xlsx conforme o template padrão de boletagem</p>
+            <button class="btn btn-subtle btn-sm" id="escolher-arquivo">Escolher arquivo</button>
+            <input type="file" id="file-input" style="display:none" accept=".csv,.xlsx">
+          </div>
+          <div id="file-preview"></div>
+        </div>
+        <div class="drawer-foot" style="border-radius:0 0 16px 16px;">
+          <button class="btn btn-ghost" id="limpar-import">Remover arquivos</button>
+          <button class="btn btn-primary" id="inserir-import" disabled>${icon('arrow-right')} Inserir</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Como funciona</h3></div>
+        <div class="card-pad" style="display:flex; flex-direction:column; gap:16px;">
+          <div class="help-banner" style="margin:0;">${icon('info')}<div><b>1. Baixe o template</b><p>Planilha padrão com as colunas exigidas por classe de ativo (RF pública/privada, RV, derivativos, cotas).</p></div></div>
+          <div class="help-banner" style="margin:0;">${icon('upload-cloud')}<div><b>2. Preencha e envie</b><p>Cada linha representa uma boleta. O sistema valida automaticamente fundo, ativo e contraparte.</p></div></div>
+          <div class="help-banner" style="margin:0;">${icon('shield-check')}<div><b>3. Enquadramento automático</b><p>Todas as linhas passam pela verificação de limites antes de entrarem na fila de aprovação.</p></div></div>
+        </div>
+      </div>
+    </div>
+  `;
+  let fileLoaded = false;
+  qs('#baixar-template').addEventListener('click', ()=> toast('Template de importação baixado.', 'success','download'));
+  qs('#escolher-arquivo').addEventListener('click', ()=> qs('#file-input').click());
+  const dz = qs('#dropzone');
+  ['dragenter','dragover'].forEach(ev=> dz.addEventListener(ev, (e)=>{ e.preventDefault(); dz.classList.add('drag'); }));
+  ['dragleave','drop'].forEach(ev=> dz.addEventListener(ev, (e)=>{ e.preventDefault(); dz.classList.remove('drag'); }));
+  dz.addEventListener('drop', ()=> loadFakeFile());
+  qs('#file-input').addEventListener('change', ()=> loadFakeFile());
+  function loadFakeFile(){
+    fileLoaded = true;
+    qs('#file-preview').innerHTML = `
+      <div class="up-file">
+        <div class="info"><div class="ficon">${icon('file-spreadsheet')}</div>
+          <div><div class="cell-strong" style="font-size:13px;">boletagem_lote_${todayStr(0).replaceAll('/','')}.xlsx</div><div class="cell-sub">48 linhas · 6 fundos · validado</div></div>
+        </div>
+        <button class="rowbtn danger" id="remover-file">${icon('x')}</button>
+      </div>
+      <div class="table-wrap" style="margin-top:14px; border:1px solid var(--line); border-radius:10px;">
+        <table class="dt">
+          <thead><tr><th>Fundo</th><th>Ativo</th><th>Tipo</th><th class="num">Valor</th><th>Validação</th></tr></thead>
+          <tbody>
+            ${FUNDOS.slice(0,5).map((f,i)=>`<tr><td class="cell-strong">${f.nome}</td><td>${ATIVOS[i+4].nome}</td><td>${i%2?'Aplicação':'Compra'}</td><td class="num tnum">${fmtBRL(500000+i*125000)}</td><td><span class="pill pill-green">${icon('check')}OK</span></td></tr>`).join('')}
+          </tbody>
+        </table>
+      </div>`;
+    qs('#inserir-import').disabled = false;
+    qs('#remover-file').addEventListener('click', clearFile);
+    refreshIcons();
+  }
+  function clearFile(){ fileLoaded=false; qs('#file-preview').innerHTML=''; qs('#inserir-import').disabled = true; }
+  qs('#limpar-import').addEventListener('click', clearFile);
+  qs('#inserir-import').addEventListener('click', ()=>{
+    if(!fileLoaded) return;
+    FUNDOS.slice(0,5).forEach((f,i)=>{
+      const seed = BOLETAS.length;
+      BOLETAS.unshift({id:nextId('BOL'), fundo:f.nome, classe:'rf-privada', ativo:ATIVOS[i+4].nome, tipo:i%2?'Aplicação':'Compra',
+        data:todayStr(0), valor:500000+i*125000, qtd:1000+i*50, contraparte:CONTRAPARTES[i%CONTRAPARTES.length], registro:todayStr(0),
+        status:'Pendente', enqStatus:'ok', enq:buildEnquadramento(seed,'ok'), liquidacao:'—', custodia:'Pendente'});
+    });
+    toast('5 boletas inseridas com sucesso via importação em lote.', 'success','upload-cloud');
+    clearFile();
+  });
+}
+
+/* ================= ENQUADRAMENTO (painel agregado — elemento assinatura) ================= */
+function svgArc(pct, size){
+  size = size||128;
+  const r = size/2 - 10, c = size/2;
+  const circ = 2*Math.PI*r;
+  const totalArc = circ*0.75;
+  const dash = Math.min(pct,100)/100 * totalArc;
+  const color = pct>=90 ? 'var(--red-600)' : pct>=70 ? 'var(--amber-600)' : 'var(--teal-600)';
+  return `
+  <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="transform:rotate(135deg);">
+    <circle cx="${c}" cy="${c}" r="${r}" fill="none" stroke="var(--ink-100)" stroke-width="10" stroke-dasharray="${totalArc} ${circ}" stroke-linecap="round"/>
+    <circle cx="${c}" cy="${c}" r="${r}" fill="none" stroke="${color}" stroke-width="10" stroke-dasharray="${dash} ${circ}" stroke-linecap="round"/>
+  </svg>`;
+}
+
+function renderEnquadramento(){
+  const fundoSel = state.enqFundo || FUNDOS[0].nome;
+  const rules = [
+    {label:'Concentração por emissor', sub:'Banco Bradesco S.A.', pct:68},
+    {label:'Diversificação — Ações/Cotas FIA', sub:'Limite por ativo financeiro', pct:89},
+    {label:'Ativos de baixa liquidez', sub:'Crédito privado', pct:34},
+    {label:'Exposição a derivativos', sub:'% do PL do fundo', pct:96},
+  ];
+  const violacoes = BOLETAS.filter(b=> b.fundo===fundoSel && b.enqStatus!=='ok');
+
+  qs('#page').innerHTML = `
+    <div class="page-head">
+      <div>
+        <div class="crumb">${icon('home')} / <span>Enquadramento</span></div>
+        <div class="page-title">Painel de Enquadramento</div>
+        <div class="page-sub">Monitoramento em tempo real dos limites de risco e concentração por fundo.</div>
+      </div>
+      <div class="head-actions">
+        <div class="filter-chip">${icon('landmark')}<select id="enq-fundo-select">${fundoOptions(fundoSel)}</select></div>
+      </div>
+    </div>
+
+    <div class="grid" style="grid-template-columns:repeat(4,1fr); margin-bottom:20px;">
+      ${rules.map(r=>`
+        <div class="card card-pad" style="display:flex; flex-direction:column; align-items:center; text-align:center; gap:2px;">
+          <div class="gauge-wrap">
+            ${svgArc(r.pct)}
+            <div class="gauge-val">${r.pct}%</div>
+          </div>
+          <div style="font-weight:700; font-size:12.5px; margin-top:4px;">${r.label}</div>
+          <div class="gauge-lbl" style="text-transform:none; letter-spacing:0; font-weight:600;">${r.sub}</div>
+        </div>`).join('')}
+    </div>
+
+    <div class="grid" style="grid-template-columns:1.3fr 1fr; align-items:start;">
+      <div class="card">
+        <div class="card-head"><div><h3>Limites detalhados</h3><div class="hint">${fundoSel}</div></div></div>
+        <div class="card-pad">
+          ${rules.map(r=>`
+            <div class="limit-row">
+              <div class="limit-meta"><div class="t">${r.label}</div><div class="s">${r.sub}</div></div>
+              <div class="limit-bar"><i style="width:${r.pct}%; background:${r.pct>=90?'var(--red-600)':r.pct>=70?'var(--amber-600)':'var(--teal-600)'};"></i></div>
+              <div class="limit-pct" style="color:${r.pct>=90?'var(--red-700)':r.pct>=70?'var(--amber-700)':'var(--teal-700)'}">${r.pct}%</div>
+            </div>`).join('')}
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Boletas com alerta / violação</h3></div>
+        <div>
+          ${violacoes.length ? violacoes.map(b=>`
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:13px 20px; border-bottom:1px solid var(--line); gap:10px; cursor:pointer;" data-enqrow="${b.id}">
+              <div><div class="cell-strong" style="font-size:12.5px;">${b.ativo}</div><div class="cell-sub">${b.tipo} · ${fmtBRL(b.valor)}</div></div>
+              ${enqIcon(b.enqStatus)}
+            </div>`).join('') : `<div class="empty">${icon('shield-check')}<p>Nenhuma pendência de enquadramento para este fundo.</p></div>`}
+        </div>
+      </div>
+    </div>
+  `;
+  qs('#enq-fundo-select').addEventListener('change', (e)=>{ state.enqFundo = e.target.value; renderEnquadramento(); });
+  qsa('[data-enqrow]').forEach(r=> r.addEventListener('click', ()=> showEnquadramentoModal(BOLETAS.find(b=>b.id===r.dataset.enqrow))));
+  refreshIcons();
+}
+
+/* ================= PÓS-TRADE ================= */
+function renderPosTrade(){
+  const elegiveis = BOLETAS.filter(b=> b.status==='Aprovada' || b.status==='Finalizada' || b.status==='Pendente de Autorização Interna' || b.status==='Pendente');
+  const foco = state.postradeFoco ? BOLETAS.find(b=>b.id===state.postradeFoco) : elegiveis[0];
+
+  const stepsFor = (b)=>{
+    const order = ['Registrada','Aprovada','Liquidada','Custodiada'];
+    let doneUntil = 0;
+    if(b.status==='Pendente' || b.status==='Pendente de Autorização Interna') doneUntil = 0;
+    if(b.status==='Aprovada') doneUntil = 1;
+    if(b.status==='Finalizada') doneUntil = 3;
+    if(b.status==='Reprovada' || b.status==='Cancelada') doneUntil = -1;
+    return order.map((label,i)=>({label, done:i<=doneUntil, current:i===doneUntil+1 && doneUntil>=0}));
+  };
+
+  qs('#page').innerHTML = `
+    <div class="page-head">
+      <div>
+        <div class="crumb">${icon('home')} / <span>Pós-Trade</span></div>
+        <div class="page-title">Liquidação &amp; Custódia</div>
+        <div class="page-sub">Acompanhe o ciclo de vida da operação após a aprovação: liquidação financeira e confirmação de custódia.</div>
+      </div>
+    </div>
+
+    ${foco ? `
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-head"><div><h3>${foco.fundo}</h3><div class="hint">${foco.ativo} · ${foco.tipo} · ${fmtBRL(foco.valor)}</div></div>${statusPill(foco.status)}</div>
+      <div class="card-pad">
+        <div class="stepper">
+          ${stepsFor(foco).map((s,i)=>`
+            <div class="step ${s.done?'done':''} ${s.current?'current':''}">
+              <div class="line"></div>
+              <div class="dot">${s.done?icon('check'):(i+1)}</div>
+              <div class="lbl">${s.label}</div>
+              <div class="time">${s.done?todayStr(-i):'—'}</div>
+            </div>`).join('')}
+        </div>
+        <div class="divider"></div>
+        <div class="form-grid two">
+          <div class="field"><label>Contraparte</label><p class="cell-strong">${foco.contraparte}</p></div>
+          <div class="field"><label>Custodiante</label><p class="cell-strong">Banco Bradesco S.A. — Custódia</p></div>
+          <div class="field"><label>Status de liquidação</label><p class="cell-strong">${foco.liquidacao}</p></div>
+          <div class="field"><label>Status de custódia</label><p class="cell-strong">${foco.custodia}</p></div>
+        </div>
+      </div>
+    </div>` : ''}
+
+    <div class="card">
+      <div class="card-head"><h3>Fila de liquidação</h3><div class="hint">${elegiveis.length} operações em ciclo pós-trade</div></div>
+      <div class="table-wrap">
+        <table class="dt">
+          <thead><tr><th>Fundo</th><th>Ativo</th><th>Data operação</th><th class="num">Valor</th><th>Contraparte</th><th>Liquidação</th><th>Custódia</th><th></th></tr></thead>
+          <tbody>
+            ${elegiveis.map(b=>`
+              <tr>
+                <td class="cell-strong">${b.fundo}</td>
+                <td>${b.ativo}</td>
+                <td class="tnum">${b.data}</td>
+                <td class="num tnum">${fmtBRL(b.valor)}</td>
+                <td>${b.contraparte}</td>
+                <td><span class="pill ${b.liquidacao==='Liquidado'?'pill-green':'pill-amber'}">${icon(b.liquidacao==='Liquidado'?'check':'clock')}${b.liquidacao}</span></td>
+                <td><span class="pill ${b.custodia==='Confirmada'?'pill-green':'pill-ink'}">${icon(b.custodia==='Confirmada'?'check':'hourglass')}${b.custodia}</span></td>
+                <td><button class="rowbtn" data-foco="${b.id}">${icon('route')}</button></td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+  qsa('[data-foco]').forEach(b=> b.addEventListener('click', ()=>{ state.postradeFoco=b.dataset.foco; renderPosTrade(); qs('#page').scrollTop=0; }));
+  refreshIcons();
+}
+
+/* ================= CONFIGURAÇÕES ================= */
+function renderConfiguracoes(){
+  const rows = [
+    {k:'Horário limite de passivo', v:'20:00:00'},
+    {k:'Horário limite de renda fixa', v:'16:00:00'},
+    {k:'Horário limite de renda variável', v:'16:00:00'},
+    {k:'Horário limite de derivativos', v:'16:00:00'},
+    {k:'Horário limite de fundos', v:'20:00:00'},
+  ];
+  qs('#page').innerHTML = `
+    <div class="page-head">
+      <div>
+        <div class="crumb">${icon('home')} / <span>Configurações</span></div>
+        <div class="page-title">Configurações de horários</div>
+        <div class="page-sub">Defina os horários-limite (cut-off) para cada classe de ativo aceitar boletagem no mesmo dia.</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="table-wrap">
+        <table class="dt">
+          <thead><tr><th>Configuração</th><th>Valor</th><th></th></tr></thead>
+          <tbody>
+            ${rows.map(r=>`<tr><td class="cell-strong">${r.k}</td><td class="tnum">${r.v}</td><td><button class="btn btn-subtle btn-sm" data-edit-cfg="${r.k}">Editar</button></td></tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+  qsa('[data-edit-cfg]').forEach(b=> b.addEventListener('click', ()=> toast(`Editando "${b.dataset.editCfg}"...`, 'info','pencil')));
+  refreshIcons();
+}
+
+/* ================= ROUTER / INIT ================= */
+function render(){
+  renderSidebar();
+  renderTopbar();
+  const routes = {
+    'inicio': renderInicio,
+    'consultas': renderConsultas,
+    'cadastros': ()=> state.persona==='admin' ? renderCadastros() : renderConsultas(),
+    'boletagem': renderBoletagem,
+    'pos-trade': renderPosTrade,
+    'enquadramento': renderEnquadramento,
+    'configuracoes': renderConfiguracoes,
+  };
+  (routes[state.route]||renderInicio)();
+  refreshIcons();
+}
+
+document.addEventListener('DOMContentLoaded', render);
+</script>
+</body>
+</html>
